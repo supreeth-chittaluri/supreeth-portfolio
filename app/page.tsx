@@ -202,37 +202,35 @@ const umichCourses: Course[] = [
 
 type AboutTile = {
   file: string; // expected path under /public/about — drop the photo in with this filename
-  caption: string;
   rotate: string; // small collage-style tilt
 };
 
+type AboutGroup = {
+  photos: AboutTile[]; // 1 or 2 photos sharing a single caption below
+  caption: string;
+};
+
 /* Personal "About Me" tiles. Captions are set — drop the matching photo into
-   public/about/<file> and it will appear automatically. */
-const aboutTiles: AboutTile[] = [
+   public/about/<file> and it will appear automatically. Groups with two
+   photos render as a small side-by-side pair under one shared caption. */
+const aboutGroups: AboutGroup[] = [
   {
-    file: "pizza.jpg",
-    caption: "Always chasing the next great meal — this one's L'Industrie Pizzeria in NYC.",
-    rotate: "-rotate-2"
+    photos: [{ file: "pizza.jpg", rotate: "-rotate-2" }],
+    caption: "Always chasing the next great meal — this one's L'Industrie Pizzeria in NYC."
   },
   {
-    file: "friends-1.jpg",
-    caption: "Nothing beats a night out with the guys.",
-    rotate: "rotate-1"
+    photos: [
+      { file: "friends-1.jpg", rotate: "-rotate-2" },
+      { file: "friends-2.jpg", rotate: "rotate-2" }
+    ],
+    caption: "Always love hanging out with my friends."
   },
   {
-    file: "friends-2.jpg",
-    caption: "Always down to hang out with my friends.",
-    rotate: "-rotate-1"
-  },
-  {
-    file: "sunset-1.jpg",
-    caption: "I love traveling — this sunset was in LA, California.",
-    rotate: "rotate-2"
-  },
-  {
-    file: "sunset-2.jpg",
-    caption: "Another one from LA — sunsets like this never get old.",
-    rotate: "-rotate-2"
+    photos: [
+      { file: "sunset-1.jpg", rotate: "rotate-2" },
+      { file: "sunset-2.jpg", rotate: "-rotate-2" }
+    ],
+    caption: "I love traveling — these were sunsets in LA, California."
   }
 ];
 
@@ -461,29 +459,32 @@ export default function Home() {
       <section id="about" className="bg-paper py-32 dark:bg-ink">
         <SectionHeading n="05" eyebrow="Off the clock" title="About Me" />
         <div className="mx-auto max-w-content-lg columns-2 gap-6 px-4 md:columns-3">
-          {aboutTiles.map((tile) => {
-            const hasPhoto = existsSync(path.join(process.cwd(), "public", "about", tile.file));
-            return (
-              <div
-                key={tile.file}
-                className={`mb-8 break-inside-avoid text-center transition-transform hover:rotate-0 ${tile.rotate}`}
-              >
-                {hasPhoto ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    src={`/about/${tile.file}`}
-                    alt={tile.caption}
-                    className="w-full rounded-lg border-4 border-paper object-cover shadow-lg dark:border-paper/90"
-                  />
-                ) : (
-                  <div className="grid aspect-[4/5] place-items-center overflow-hidden rounded-lg border-4 border-dashed border-black/20 p-4 dark:border-paper/20">
-                    <Fill>drop photo in as public/about/{tile.file}</Fill>
-                  </div>
-                )}
-                <p className="mt-4 text-sm opacity-70">{tile.caption}</p>
+          {aboutGroups.map((group) => (
+            <div key={group.caption} className="mb-8 break-inside-avoid text-center">
+              <div className={group.photos.length === 2 ? "grid grid-cols-2 gap-2" : ""}>
+                {group.photos.map((photo) => {
+                  const hasPhoto = existsSync(path.join(process.cwd(), "public", "about", photo.file));
+                  return hasPhoto ? (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      key={photo.file}
+                      src={`/about/${photo.file}`}
+                      alt={group.caption}
+                      className={`aspect-[4/5] w-full rounded-lg border-4 border-paper object-cover shadow-lg transition-transform hover:rotate-0 dark:border-paper/90 ${photo.rotate}`}
+                    />
+                  ) : (
+                    <div
+                      key={photo.file}
+                      className={`grid aspect-[4/5] place-items-center overflow-hidden rounded-lg border-4 border-dashed border-black/20 p-4 transition-transform hover:rotate-0 dark:border-paper/20 ${photo.rotate}`}
+                    >
+                      <Fill>drop photo in as public/about/{photo.file}</Fill>
+                    </div>
+                  );
+                })}
               </div>
-            );
-          })}
+              <p className="mt-4 text-sm opacity-70">{group.caption}</p>
+            </div>
+          ))}
         </div>
       </section>
 
