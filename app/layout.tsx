@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Supreeth Chittaluri — Software Engineer",
+  title: "Supreeth Chittaluri",
   description:
     "The portfolio of Supreeth Chittaluri, a University of Michigan computer science student building backend systems, full-stack products, and applied tools.",
   keywords: [
@@ -22,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <body>{children}</body>
     </html>
   );

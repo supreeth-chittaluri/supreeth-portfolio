@@ -1,464 +1,441 @@
 import type { ReactNode } from "react";
 
-type IconName = "arrow" | "external" | "plus";
-
+/* ---------------------------------------------------------------------------
+   Contact + identity
+   --------------------------------------------------------------------------- */
 const githubUrl = "https://github.com/supreeth-chittaluri";
 const linkedInUrl = "https://www.linkedin.com/in/supreeth-chittaluri-044a42276";
 const email = "supreetc@umich.edu";
 
-function Icon({ name }: { name: IconName }) {
-  if (name === "arrow") {
-    return (
-      <svg viewBox="0 0 20 20" aria-hidden="true" className="icon">
-        <path d="M3 10h13M11 4l6 6-6 6" />
-      </svg>
-    );
+/* Renders a visible "fill in later" marker so unfinished spots are easy to find. */
+function Fill({ children }: { children: ReactNode }) {
+  return (
+    <span className="rounded bg-amber-200/70 px-1.5 py-0.5 font-mono text-xs text-amber-950 dark:bg-amber-300/20 dark:text-amber-200">
+      [FILL IN: {children}]
+    </span>
+  );
+}
+
+/* Numbered eyebrow + heading used above every section. */
+function SectionHeading({
+  n,
+  eyebrow,
+  title
+}: {
+  n: string;
+  eyebrow: string;
+  title: string;
+}) {
+  return (
+    <div className="mb-16 flex flex-col items-center gap-3 text-center">
+      <span className="font-mono text-xs uppercase tracking-[0.25em] text-accent">
+        {n} — {eyebrow}
+      </span>
+      <h2 className="font-serif text-4xl font-semibold">{title}</h2>
+    </div>
+  );
+}
+
+/* Small monoline icons — kept in one place so the contact row and project
+   links share a consistent stroke weight. */
+function MailIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M3 6.5A1.5 1.5 0 0 1 4.5 5h15A1.5 1.5 0 0 1 21 6.5v11a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5v-11Z" />
+      <path d="m3.5 6 8.5 6.5L20.5 6" />
+    </svg>
+  );
+}
+
+function LinkedInIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+      <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28ZM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12ZM7.12 20.45H3.56V9h3.56v11.45Z" />
+    </svg>
+  );
+}
+
+function GitHubIcon() {
+  return (
+    <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true">
+      <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
+    </svg>
+  );
+}
+
+/* Pill-style contact link — used for email / LinkedIn / GitHub instead of a
+   plain underline so the intro reads as a proper contact row. */
+function ContactChip({
+  href,
+  icon,
+  label,
+  external = true
+}: {
+  href: string;
+  icon: ReactNode;
+  label: string;
+  external?: boolean;
+}) {
+  return (
+    <a
+      href={href}
+      {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
+      className="group inline-flex items-center gap-2 rounded-full border border-black/15 px-4 py-2 text-sm text-neutral-800 transition-colors hover:border-accent hover:text-accent dark:border-white/15 dark:text-neutral-200"
+    >
+      {icon}
+      <span>{label}</span>
+    </a>
+  );
+}
+
+/* ---------------------------------------------------------------------------
+   Data
+   --------------------------------------------------------------------------- */
+type ProjectLink = { label: string; href: string };
+
+type Project = {
+  title: string;
+  blurb: string;
+  stack?: string;
+  links: ProjectLink[];
+  status?: string; // shown instead of links when there is nothing to link yet
+  imageNote: ReactNode; // placeholder text for the project image
+};
+
+const projects: Project[] = [
+  {
+    title: "MiniRedis",
+    blurb:
+      "A Redis-style in-memory key-value database built around concurrent TCP clients, expiration, eviction, persistence, and measured throughput.",
+    stack: "C++20 · TCP/IP · multithreading · CMake",
+    links: [],
+    status: "source link pending",
+    imageNote: "MiniRedis screenshot or benchmark chart"
+  },
+  {
+    title: "Undrift",
+    blurb:
+      "A full-stack developer skill-decay platform that makes practice patterns visible through GitHub activity and LLM classification.",
+    stack: "Python · FastAPI · React · PostgreSQL · GitHub API · LLM",
+    links: [],
+    status: "source link pending",
+    imageNote: "Undrift dashboard screenshot"
+  },
+  {
+    title: "a2transit",
+    blurb:
+      "A multimodal Ann Arbor transit planner connecting TheRide and U-M MBus data into one route-planning experience.",
+    stack: "FastAPI · PostGIS · Redis · React · MapLibre · GTFS",
+    links: [],
+    status: "source link pending",
+    imageNote: "a2transit map screenshot"
+  },
+  {
+    title: "Real-time Stock App",
+    blurb:
+      "Planned and in development — a focused product view over real-time market signals.",
+    stack: "planned / in development",
+    links: [],
+    status: "Coming Soon",
+    imageNote: "Stock app concept mockup"
   }
+];
 
-  if (name === "external") {
-    return (
-      <svg viewBox="0 0 20 20" aria-hidden="true" className="icon">
-        <path d="M11 3h6v6M17 3l-8 8" />
-        <path d="M15 11v5a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5" />
-      </svg>
-    );
-  }
+type Skill = { name: string; icon: string };
 
-  return (
-    <svg viewBox="0 0 20 20" aria-hidden="true" className="icon">
-      <path d="M10 3v14M3 10h14" />
-    </svg>
-  );
-}
+const icon = (path: string) =>
+  `https://cdn.jsdelivr.net/gh/devicons/devicon@2.16.0/icons/${path}`;
 
-function SectionMark({ number, children }: { number: string; children: ReactNode }) {
-  return (
-    <p className="section-mark">
-      <span>{number}</span>
-      {children}
-    </p>
-  );
-}
+const skills: Skill[] = [
+  { name: "C++", icon: icon("cplusplus/cplusplus-original.svg") },
+  { name: "Python", icon: icon("python/python-original.svg") },
+  { name: "TypeScript", icon: icon("typescript/typescript-original.svg") },
+  { name: "JavaScript", icon: icon("javascript/javascript-original.svg") },
+  { name: "React", icon: icon("react/react-original.svg") },
+  { name: "Next.js", icon: icon("nextjs/nextjs-original.svg") },
+  { name: "FastAPI", icon: icon("fastapi/fastapi-original.svg") },
+  { name: "PostgreSQL", icon: icon("postgresql/postgresql-original.svg") },
+  { name: "Redis", icon: icon("redis/redis-original.svg") },
+  { name: "Docker", icon: icon("docker/docker-original.svg") },
+  { name: "AWS", icon: icon("amazonwebservices/amazonwebservices-original-wordmark.svg") },
+  { name: "Google Cloud", icon: icon("googlecloud/googlecloud-original.svg") },
+  { name: "Git", icon: icon("git/git-original.svg") },
+  { name: "GitHub", icon: icon("github/github-original.svg") },
+  { name: "CMake", icon: icon("cmake/cmake-original.svg") },
+  { name: "Linux", icon: icon("linux/linux-original.svg") },
+  { name: "PyTorch", icon: icon("pytorch/pytorch-original.svg") },
+  { name: "TensorFlow", icon: icon("tensorflow/tensorflow-original.svg") },
+  { name: "Pandas", icon: icon("pandas/pandas-original.svg") },
+  { name: "NumPy", icon: icon("numpy/numpy-original.svg") }
+];
 
-function RedisVisual() {
-  return (
-    <svg viewBox="0 0 720 320" role="img" aria-label="MiniRedis system sketch">
-      <g className="redis-links">
-        <path d="M80 90h170l90 70 120-66h178" />
-        <path d="M80 90l170 122 90-52 120 74 178-40" />
-        <path d="M250 212l90-52 120 8" />
-      </g>
-      <g className="redis-points">
-        <circle cx="80" cy="90" r="9" />
-        <circle cx="250" cy="90" r="9" />
-        <circle cx="340" cy="160" r="12" />
-        <circle cx="460" cy="94" r="9" />
-        <circle cx="460" cy="234" r="9" />
-        <circle cx="638" cy="194" r="9" />
-      </g>
-      <g className="redis-labels">
-        <text x="64" y="62">TCP</text>
-        <text x="314" y="143">POOL</text>
-        <text x="438" y="70">CACHE</text>
-        <text x="605" y="226">AOF</text>
-      </g>
-      <text className="redis-metric" x="78" y="286">52k+ ops / sec</text>
-    </svg>
-  );
-}
+type Course = { code: string; title: string };
 
-function UndriftVisual() {
-  return (
-    <svg viewBox="0 0 520 300" role="img" aria-label="Undrift skill activity sketch">
-      <g className="drift-grid">
-        <path d="M40 54h440M40 108h440M40 162h440M40 216h440" />
-        <path d="M40 54v162M128 54v162M216 54v162M304 54v162M392 54v162M480 54v162" />
-      </g>
-      <g className="drift-bars">
-        <rect x="65" y="130" width="36" height="86" rx="18" />
-        <rect x="153" y="94" width="36" height="122" rx="18" />
-        <rect x="241" y="158" width="36" height="58" rx="18" />
-        <rect x="329" y="72" width="36" height="144" rx="18" />
-        <rect x="417" y="112" width="36" height="104" rx="18" />
-      </g>
-      <g className="drift-dots">
-        <circle cx="83" cy="118" r="7" />
-        <circle cx="171" cy="82" r="7" />
-        <circle cx="259" cy="146" r="7" />
-        <circle cx="347" cy="60" r="7" />
-        <circle cx="435" cy="100" r="7" />
-      </g>
-      <text x="40" y="258">RECENCY</text>
-      <text x="392" y="258">PRACTICE →</text>
-    </svg>
-  );
-}
+const umichCourses: Course[] = [
+  { code: "EECS 201", title: "Computer Science Pragmatics" },
+  { code: "EECS 203", title: "Discrete Mathematics" },
+  { code: "EECS 280", title: "Programming and Introductory Data Structures" },
+  { code: "EECS 281", title: "Data Structures and Algorithms" },
+  { code: "EECS 370", title: "Introduction to Computer Organization" },
+  { code: "EECS 376", title: "Foundations of Computer Science" },
+  { code: "EECS 482", title: "Introduction to Operating Systems" },
+  { code: "EECS 484", title: "Database Management Systems" },
+  { code: "EECS 485", title: "Web Systems" },
+  { code: "EECS 491", title: "Introduction to Distributed Systems" },
+  { code: "EECS 493", title: "User Interface Development" },
+  { code: "EECS 497", title: "Human-Centered Software Design and Development" },
+  { code: "EECS 498-016", title: "Applied Agentic Software Engineering (Special Topics)" },
+  { code: "ROB 102", title: "Introduction to AI Programming" },
+  { code: "MATH 214", title: "Applied Linear Algebra" },
+  { code: "MATH 215", title: "Multivariable and Vector Calculus" }
+];
 
-function TransitVisual() {
-  return (
-    <svg viewBox="0 0 560 300" role="img" aria-label="a2transit route sketch">
-      <path className="route route-one" d="M22 226C110 212 108 80 218 96s99 106 188 80 82-66 132-82" />
-      <path className="route route-two" d="M12 112c90-22 117 60 190 42 77-19 95-99 180-80 56 12 92 46 166 21" />
-      <path className="route route-three" d="M62 34c52 50 39 133 107 172 61 35 103-42 173-45 77-3 101 83 190 82" />
-      <g className="route-points">
-        <circle cx="22" cy="226" r="8" />
-        <circle cx="218" cy="96" r="8" />
-        <circle cx="410" cy="176" r="8" />
-        <circle cx="12" cy="112" r="8" />
-        <circle cx="202" cy="154" r="8" />
-        <circle cx="382" cy="74" r="8" />
-        <circle cx="62" cy="34" r="8" />
-        <circle cx="242" cy="206" r="8" />
-        <circle cx="532" cy="243" r="8" />
-      </g>
-      <g className="route-labels">
-        <text x="24" y="266">THE RIDE</text>
-        <text x="211" y="72">MBUS</text>
-        <text x="430" y="164">A2</text>
-      </g>
-    </svg>
-  );
-}
+/* Personal "About Me" tiles — no captions/photos on file yet. */
+const aboutTiles = [1, 2, 3, 4, 5, 6];
 
-function StockVisual() {
-  return (
-    <svg viewBox="0 0 720 300" role="img" aria-label="Real-time stock app concept sketch">
-      <g className="stock-grid">
-        <path d="M28 58h664M28 118h664M28 178h664M28 238h664" />
-        <path d="M28 28v220M160 28v220M292 28v220M424 28v220M556 28v220M692 28v220" />
-      </g>
-      <path className="stock-line" d="M30 207 98 188l62 26 63-71 66 38 67-72 70 36 68-17 62-58 75 38 58-24" />
-      <circle className="stock-dot" cx="486" cy="110" r="7" />
-      <text x="28" y="282">CONCEPT / IN DEVELOPMENT</text>
-      <text x="566" y="282">LIVE SIGNALS</text>
-    </svg>
-  );
-}
+/* Shared classes for the rounded card containers used by Education / Experiences. */
+const card =
+  "relative rounded-2xl p-8 sm:p-10 border border-black/10 transition-colors hover:border-accent/50 dark:border-white/10";
 
+/* ---------------------------------------------------------------------------
+   Page
+   --------------------------------------------------------------------------- */
 export default function Home() {
   return (
     <main id="top">
-      <header className="site-header">
-        <a className="wordmark" href="#top" aria-label="Supreeth Chittaluri home">
-          <span className="wordmark-mark">sc</span>
-          <span>Supreeth Chittaluri</span>
-        </a>
-
-        <span className="header-note">software engineer / ann arbor</span>
-
-        <nav className="desktop-nav" aria-label="Primary navigation">
-          <a href="#projects">Work</a>
-          <a href="#experience">Profile</a>
-          <a href="#skills">Stack</a>
-          <a href="#contact">Contact</a>
-        </nav>
-
-        <details className="mobile-menu">
-          <summary>Menu</summary>
-          <nav aria-label="Mobile navigation">
-            <a href="#projects">Work</a>
-            <a href="#experience">Profile</a>
-            <a href="#skills">Stack</a>
-            <a href="#contact">Contact</a>
+      {/* Floating pill nav */}
+      <header className="fixed left-1/2 top-5 z-50 h-16 w-[92%] max-w-[1100px] -translate-x-1/2 rounded-full border border-black/10 bg-white/40 px-6 backdrop-blur-2xl dark:border-white/10 dark:bg-black/40">
+        <div className="flex h-full items-center justify-between">
+          <a href="#top" className="group flex items-center gap-3">
+            <span className="grid h-8 w-8 place-items-center rounded-full border border-current font-serif text-sm lowercase transition-colors group-hover:border-accent group-hover:text-accent">
+              sc
+            </span>
+            <span className="text-sm">© 2026 Supreeth Chittaluri</span>
+          </a>
+          <nav className="hidden items-center gap-6 text-sm md:flex">
+            <a href="#projects" className="nav-link">Projects</a>
+            <a href="#education" className="nav-link">Education</a>
+            <a href="#experiences" className="nav-link">Experiences</a>
+            <a href="#skills" className="nav-link">Skills</a>
+            <a href="#about" className="nav-link">About</a>
           </nav>
-        </details>
+        </div>
       </header>
 
-      <div className="page-shell">
-        <section className="intro" id="about" aria-labelledby="intro-title">
-          <div className="intro-topline">
-            <span>01 / hello</span>
-            <span>open to software engineering conversations</span>
+      {/* Intro */}
+      <section
+        id="intro"
+        className="flex min-h-screen items-center justify-center bg-white px-6 dark:bg-[#0f0f14]"
+      >
+        <div className="flex max-w-xl flex-col gap-4 text-sm">
+          <h1 className="font-serif text-4xl font-bold">Supreeth Chittaluri</h1>
+          <p className="text-neutral-700 dark:text-neutral-300">
+            Studying Computer Science at the University of Michigan.
+          </p>
+          <p className="text-neutral-700 dark:text-neutral-300">
+            <Fill>a one-line personal sentence — what you like to do</Fill>
+          </p>
+          <div className="flex flex-wrap gap-3 pt-2">
+            <ContactChip href={`mailto:${email}`} icon={<MailIcon />} label={email} external={false} />
+            <ContactChip href={linkedInUrl} icon={<LinkedInIcon />} label="LinkedIn" />
+            <ContactChip href={githubUrl} icon={<GitHubIcon />} label="GitHub" />
           </div>
+        </div>
+      </section>
 
-          <div className="intro-center">
-            <p className="intro-kicker">Computer Science @ University of Michigan — Ann Arbor</p>
-            <h1 id="intro-title">
-              Supreeth
-              <span>Chittaluri</span>
-            </h1>
-            <p className="intro-copy">
-              Software engineer interested in backend systems, full-stack products,
-              cloud infrastructure, applied AI, and developer tools.
+      {/* Projects */}
+      <section id="projects" className="bg-white py-32 dark:bg-[#0f0f14]">
+        <SectionHeading n="01" eyebrow="Selected work" title="Projects" />
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {projects.map((p) => (
+              <details
+                key={p.title}
+                className="project-card relative rounded-2xl border border-black/10 transition-colors hover:border-accent/50 dark:border-white/10"
+              >
+                <summary className="flex w-full items-center justify-between p-6 text-left">
+                  <h3 className="font-serif text-xl font-semibold">{p.title}</h3>
+                  <span className="summary-toggle text-xl">＋</span>
+                </summary>
+                <div className="project-panel">
+                  <div>
+                    <div className="px-6 pb-6">
+                      <div className="mb-4 grid h-[180px] place-items-center overflow-hidden rounded-2xl border border-dashed border-black/20 p-4 text-center dark:border-white/20">
+                        <Fill>{p.imageNote}</Fill>
+                      </div>
+                      <p className="mb-4 text-sm text-neutral-700 dark:text-neutral-300">
+                        {p.blurb}
+                      </p>
+                      {p.stack ? (
+                        <p className="mb-4 font-mono text-xs uppercase tracking-wide text-neutral-500">
+                          {p.stack}
+                        </p>
+                      ) : null}
+                      <div className="flex flex-wrap gap-6 text-sm">
+                        {p.links.map((l) => (
+                          <a
+                            key={l.label}
+                            href={l.href}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="underline underline-offset-4 hover:text-accent"
+                          >
+                            {l.label}
+                          </a>
+                        ))}
+                        {p.links.length === 0 ? (
+                          <span className="text-neutral-500">
+                            {p.status ?? "Coming Soon"}
+                          </span>
+                        ) : null}
+                      </div>
+                      {p.links.length === 0 && p.status === "source link pending" ? (
+                        <p className="mt-3">
+                          <Fill>verified {p.title} repository / demo URL</Fill>
+                        </p>
+                      ) : null}
+                    </div>
+                  </div>
+                </div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Education */}
+      <section id="education" className="bg-white py-32 dark:bg-[#0f0f14]">
+        <SectionHeading n="02" eyebrow="Coursework" title="Education" />
+        <div className="mx-auto max-w-4xl px-6">
+          <div className={card}>
+            <h3 className="mb-2 font-serif text-2xl font-semibold">
+              University of Michigan, College of Engineering
+            </h3>
+            <p className="mb-1 text-base text-neutral-700 dark:text-neutral-300">
+              Ann Arbor, MI
             </p>
+            <p className="mb-4 text-lg font-medium text-neutral-900 dark:text-neutral-100">
+              Bachelor of Science, Computer Science
+            </p>
+            <p className="mb-2 font-mono text-xs uppercase tracking-wide text-neutral-500">
+              Relevant coursework
+            </p>
+            <ul className="grid grid-cols-1 gap-x-8 gap-y-1 text-sm text-neutral-700 sm:grid-cols-2 dark:text-neutral-300">
+              {umichCourses.map((c) => (
+                <li key={c.code}>
+                  {c.code} — {c.title}
+                </li>
+              ))}
+            </ul>
           </div>
+        </div>
+      </section>
 
-          <div className="intro-bottomline">
-            <span>Most recently / AI Product &amp; Engineering Intern at OneStream Software</span>
-            <a className="inline-link" href="#projects">See the work <Icon name="arrow" /></a>
-          </div>
-        </section>
+      {/* Experiences */}
+      <section id="experiences" className="bg-white py-32 dark:bg-[#0f0f14]">
+        <SectionHeading n="03" eyebrow="Timeline" title="Experiences" />
+        <div className="mx-auto max-w-4xl px-6">
+          <div className="flex flex-col gap-6">
+            <div className={card}>
+              <h3 className="mb-3 font-serif text-2xl font-semibold">
+                AI Product &amp; Engineering Intern
+              </h3>
+              <p className="mb-2 text-lg font-medium text-neutral-800 dark:text-neutral-200">
+                OneStream Software
+              </p>
+              <p className="mb-1 text-base text-neutral-700 dark:text-neutral-300">
+                <Fill>dates</Fill>
+              </p>
+              <p className="mb-4 text-base text-neutral-700 dark:text-neutral-300">
+                <Fill>location</Fill>
+              </p>
+              <p className="text-base leading-relaxed text-neutral-700 dark:text-neutral-300">
+                AI &amp; Operational Analytics — <Fill>one-line description of the work</Fill>
+              </p>
+            </div>
 
-        <section className="projects-section" id="projects" aria-labelledby="projects-title">
-          <div className="section-heading">
-            <SectionMark number="02">Selected work</SectionMark>
-            <div className="section-heading-copy">
-              <h2 id="projects-title">Built to be looked at <em>closely.</em></h2>
-              <p>
-                A small set of systems, products, and real-world interfaces. Open a tile
-                for the thinking behind each one.
+            <div className={card}>
+              <h3 className="mb-3 font-serif text-2xl font-semibold">
+                <Fill>role</Fill>
+              </h3>
+              <p className="mb-2 text-lg font-medium text-neutral-800 dark:text-neutral-200">
+                <Fill>organization</Fill>
+              </p>
+              <p className="mb-1 text-base text-neutral-700 dark:text-neutral-300">
+                <Fill>dates</Fill>
+              </p>
+              <p className="mb-4 text-base text-neutral-700 dark:text-neutral-300">
+                <Fill>location</Fill>
+              </p>
+              <p className="text-base leading-relaxed text-neutral-700 dark:text-neutral-300">
+                <Fill>one-line description</Fill>
+              </p>
+            </div>
+
+            <div className={card}>
+              <h3 className="mb-3 font-serif text-2xl font-semibold">
+                <Fill>role</Fill>
+              </h3>
+              <p className="mb-2 text-lg font-medium text-neutral-800 dark:text-neutral-200">
+                <Fill>organization</Fill>
+              </p>
+              <p className="mb-1 text-base text-neutral-700 dark:text-neutral-300">
+                <Fill>dates</Fill>
+              </p>
+              <p className="mb-4 text-base text-neutral-700 dark:text-neutral-300">
+                <Fill>location</Fill>
+              </p>
+              <p className="text-base leading-relaxed text-neutral-700 dark:text-neutral-300">
+                <Fill>one-line description</Fill>
               </p>
             </div>
           </div>
+        </div>
+      </section>
 
-          <div className="project-wall">
-            <details className="project-tile tile-redis" open>
-              <summary>
-                <div className="tile-meta">
-                  <span>01 / systems</span>
-                  <span className="tile-toggle"><Icon name="plus" /></span>
-                </div>
-                <div className="tile-art tile-art-redis"><RedisVisual /></div>
-                <div className="tile-heading">
-                  <p>C++ / networked datastore</p>
-                  <h3>MiniRedis</h3>
-                  <span className="tile-arrow"><Icon name="arrow" /></span>
-                </div>
-              </summary>
-              <div className="project-detail">
-                <p className="detail-summary">
-                  A Redis-style in-memory key-value database built around concurrent TCP clients,
-                  expiration, eviction, persistence, and measured throughput.
-                </p>
-                <div className="detail-columns">
-                  <div>
-                    <span className="detail-label">What it covers</span>
-                    <p>SET, GET, DEL, EXISTS, EXPIRE, TTL, reader-writer locks, a fixed worker pool, LRU eviction, and append-only persistence.</p>
-                  </div>
-                  <div>
-                    <span className="detail-label">Evidence</span>
-                    <p>25,000-request benchmark at 52,000+ operations per second, with unit and integration coverage for parsing, concurrency, expiration, and recovery.</p>
-                  </div>
-                </div>
-                <div className="tile-footer">
-                  <span>C++20 · TCP/IP · multithreading · CMake</span>
-                  <span>source link pending</span>
-                </div>
-                {/* [FILL IN: Add the verified MiniRedis repository URL when it is public.] */}
+      {/* Skills */}
+      <section id="skills" className="bg-white py-32 dark:bg-[#0f0f14]">
+        <SectionHeading n="04" eyebrow="Toolkit" title="Main Skills" />
+        <div className="mx-auto flex max-w-[1000px] flex-wrap justify-center gap-4 px-4">
+          {skills.map((s) => (
+            <div
+              key={s.name}
+              title={s.name}
+              className="flex h-24 w-24 items-center justify-center rounded-2xl bg-black/[0.03] p-4 transition-colors hover:bg-accent/10 dark:bg-white/[0.06]"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={s.icon}
+                alt={s.name}
+                width={48}
+                height={48}
+                loading="lazy"
+                className="h-12 w-12 select-none object-contain"
+              />
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* About Me */}
+      <section id="about" className="bg-white py-32 dark:bg-[#0f0f14]">
+        <SectionHeading n="05" eyebrow="Off the clock" title="About Me" />
+        <div className="mx-auto max-w-content-lg columns-2 gap-6 px-4 md:columns-3">
+          {aboutTiles.map((_, i) => (
+            <div
+              key={i}
+              className="mb-8 break-inside-avoid text-center"
+            >
+              <div className="grid aspect-[4/5] place-items-center overflow-hidden rounded-2xl border border-dashed border-black/20 dark:border-white/20">
+                <Fill>photo {i + 1}</Fill>
               </div>
-            </details>
-
-            <details className="project-tile tile-undrift">
-              <summary>
-                <div className="tile-meta">
-                  <span>02 / developer tool</span>
-                  <span className="tile-toggle"><Icon name="plus" /></span>
-                </div>
-                <div className="tile-art tile-art-undrift"><UndriftVisual /></div>
-                <div className="tile-heading">
-                  <p>GitHub activity / skill decay</p>
-                  <h3>Undrift</h3>
-                  <span className="tile-arrow"><Icon name="arrow" /></span>
-                </div>
-              </summary>
-              <div className="project-detail">
-                <p className="detail-summary">
-                  A full-stack developer skill-decay platform that makes practice patterns visible
-                  through GitHub activity and LLM classification.
-                </p>
-                <div className="detail-columns">
-                  <div>
-                    <span className="detail-label">The idea</span>
-                    <p>Pull commit history, classify the primary technology represented by each commit, and weight the signal toward recent practice.</p>
-                  </div>
-                  <div>
-                    <span className="detail-label">The build</span>
-                    <p>FastAPI and PostgreSQL on the backend, with a React dashboard for trends toward and away from staleness.</p>
-                  </div>
-                </div>
-                <div className="tile-footer">
-                  <span>Python · FastAPI · React · PostgreSQL · GitHub API · LLM</span>
-                  <span>source link pending</span>
-                </div>
-                {/* [FILL IN: Add the verified Undrift repository or demo URL when it is public.] */}
-              </div>
-            </details>
-
-            <details className="project-tile tile-transit">
-              <summary>
-                <div className="tile-meta">
-                  <span>03 / real-time maps</span>
-                  <span className="tile-toggle"><Icon name="plus" /></span>
-                </div>
-                <div className="tile-art tile-art-transit"><TransitVisual /></div>
-                <div className="tile-heading">
-                  <p>Ann Arbor / multimodal routing</p>
-                  <h3>a2transit</h3>
-                  <span className="tile-arrow"><Icon name="arrow" /></span>
-                </div>
-              </summary>
-              <div className="project-detail">
-                <p className="detail-summary">
-                  A multimodal Ann Arbor transit planner connecting TheRide and U-M MBus data into one route-planning experience.
-                </p>
-                <div className="detail-columns">
-                  <div>
-                    <span className="detail-label">Routing</span>
-                    <p>RAPTOR routing across local transit networks, combining scheduled GTFS data with GTFS-Realtime updates.</p>
-                  </div>
-                  <div>
-                    <span className="detail-label">Interface</span>
-                    <p>PostGIS and Redis support a FastAPI service; React, MapLibre, and WebSockets carry the experience to the client.</p>
-                  </div>
-                </div>
-                <div className="tile-footer">
-                  <span>FastAPI · PostGIS · Redis · React · MapLibre · GTFS</span>
-                  <span>source link pending</span>
-                </div>
-                {/* [FILL IN: Add the verified a2transit repository or demo URL when it is public.] */}
-              </div>
-            </details>
-
-            <details className="project-tile tile-stock">
-              <summary>
-                <div className="tile-meta">
-                  <span>04 / planned build</span>
-                  <span className="tile-toggle"><Icon name="plus" /></span>
-                </div>
-                <div className="tile-art tile-art-stock"><StockVisual /></div>
-                <div className="tile-heading">
-                  <p>Market signals / in development</p>
-                  <h3>Real-time Stock App</h3>
-                  <span className="tile-arrow"><Icon name="arrow" /></span>
-                </div>
-              </summary>
-              <div className="project-detail">
-                <p className="detail-summary">
-                  Planned and in development. This tile shows the product direction only; it does not claim a finished application or public implementation.
-                </p>
-                <div className="detail-columns">
-                  <div>
-                    <span className="detail-label">Direction</span>
-                    <p>Exploring how real-time market information could become a focused product experience.</p>
-                  </div>
-                  <div>
-                    <span className="detail-label">Status</span>
-                    <p>Repository, implementation scope, and public links are still being finalized.</p>
-                  </div>
-                </div>
-                <div className="tile-footer">
-                  <span>planned / in development</span>
-                  <span>coming later</span>
-                </div>
-                {/* [FILL IN: Replace the status copy and add verified links once the Stock App is ready to share.] */}
-              </div>
-            </details>
-          </div>
-        </section>
-
-        <section className="profile-section" id="experience" aria-labelledby="profile-title">
-          <div className="section-heading compact-heading">
-            <SectionMark number="03">Profile</SectionMark>
-            <div className="section-heading-copy">
-              <h2 id="profile-title">A software engineer, broadly.</h2>
-              <p>
-                I like work that asks for both a sturdy foundation and a clear experience on top of it.
+              <p className="mt-4 text-sm text-neutral-700 dark:text-neutral-300">
+                <Fill>one-line caption</Fill>
               </p>
             </div>
-          </div>
-
-          <div className="profile-grid">
-            <div className="profile-note">
-              <span className="note-label">Most recently</span>
-              <h3>AI Product &amp; Engineering Intern</h3>
-              <p>OneStream Software<br />AI &amp; Operational Analytics</p>
-            </div>
-            <div className="profile-note">
-              <span className="note-label">Education</span>
-              <h3>University of Michigan</h3>
-              <p>Computer Science<br />Ann Arbor, Michigan</p>
-            </div>
-            <div className="profile-note profile-note-wide">
-              <span className="note-label">How I think about the work</span>
-              <p>
-                Start with the data model, the protocol, the failure mode, and the person using it.
-                Good software makes those decisions feel inevitable after the fact.
-              </p>
-            </div>
-          </div>
-        </section>
-
-        <section className="skills-section" id="skills" aria-labelledby="skills-title">
-          <div className="section-heading compact-heading">
-            <SectionMark number="04">Stack</SectionMark>
-            <div className="section-heading-copy">
-              <h2 id="skills-title">Tools I reach for.</h2>
-              <p>Grouped by the kinds of problems they help me work through.</p>
-            </div>
-          </div>
-
-          <div className="skill-rows">
-            <div className="skill-row">
-              <span>01</span>
-              <h3>Systems + backend</h3>
-              <p>C++ · Python · FastAPI · TCP/IP · concurrency · PostgreSQL · Redis</p>
-            </div>
-            <div className="skill-row">
-              <span>02</span>
-              <h3>Full-stack product</h3>
-              <p>TypeScript · React · JavaScript · REST APIs · WebSockets · MapLibre</p>
-            </div>
-            <div className="skill-row">
-              <span>03</span>
-              <h3>Cloud + delivery</h3>
-              <p>Docker · AWS · Google Cloud · Git · GitHub Actions · CMake</p>
-            </div>
-            <div className="skill-row">
-              <span>04</span>
-              <h3>Applied AI</h3>
-              <p>LLM integration · PyTorch · TensorFlow · Pandas · NumPy</p>
-            </div>
-          </div>
-        </section>
-
-        <section className="now-section" aria-labelledby="now-title">
-          <div className="section-heading compact-heading">
-            <SectionMark number="05">Current direction</SectionMark>
-            <div className="section-heading-copy">
-              <h2 id="now-title">Curious about the layers people skip.</h2>
-              <p>
-                The next projects are a continuation of the same question: how can software stay useful as the conditions around it change?
-              </p>
-            </div>
-          </div>
-
-          <div className="focus-list">
-            <span>backend engineering</span>
-            <span>systems</span>
-            <span>full-stack engineering</span>
-            <span>cloud / infrastructure</span>
-            <span>applied AI</span>
-            <span>developer tools</span>
-          </div>
-        </section>
-
-        <section className="contact-section" id="contact" aria-labelledby="contact-title">
-          <SectionMark number="06">Contact</SectionMark>
-          <div className="contact-content">
-            <h2 id="contact-title">Let&apos;s talk about<br /><em>the hard part.</em></h2>
-            <div className="contact-right">
-              <p>
-                I&apos;m interested in software engineering roles where careful systems thinking and product judgment both matter.
-              </p>
-              <a className="email-link" href={`mailto:${email}`}>
-                {email} <Icon name="external" />
-              </a>
-              <div className="contact-links">
-                <a href={githubUrl} target="_blank" rel="noreferrer">GitHub <Icon name="external" /></a>
-                <a href={linkedInUrl} target="_blank" rel="noreferrer">LinkedIn <Icon name="external" /></a>
-                {/* [FILL IN: Add a public résumé URL when you have one you want recruiters to use.] */}
-                <span className="pending-contact">Résumé link pending</span>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <footer className="site-footer">
-          <span>© 2026 Supreeth Chittaluri</span>
-          <span>Built in Ann Arbor</span>
-          <a href="#top">Back to top <Icon name="arrow" /></a>
-        </footer>
-      </div>
+          ))}
+        </div>
+      </section>
     </main>
   );
 }
