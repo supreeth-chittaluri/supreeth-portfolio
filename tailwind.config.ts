@@ -6,7 +6,9 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        accent: "#E3B341"
+        accent: "#D9A441",
+        ink: "#14110D",
+        paper: "#F5F1E8"
       },
       fontFamily: {
         serif: ['"Libre Baskerville"', "Georgia", '"Times New Roman"', "serif"]

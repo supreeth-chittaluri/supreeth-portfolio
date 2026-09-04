@@ -63,6 +63,14 @@ function GitHubIcon() {
   );
 }
 
+function ArrowUpIcon() {
+  return (
+    <svg viewBox="0 0 20 20" width="13" height="13" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M10 15.5V4.5M5 9.5 10 4.5l5 5" />
+    </svg>
+  );
+}
+
 /* Pill-style contact link — used for email / LinkedIn / GitHub instead of a
    plain underline so the intro reads as a proper contact row. */
 function ContactChip({
@@ -80,7 +88,7 @@ function ContactChip({
     <a
       href={href}
       {...(external ? { target: "_blank", rel: "noreferrer" } : {})}
-      className="group inline-flex items-center gap-2 rounded-full border border-black/15 px-4 py-2 text-sm text-neutral-800 transition-colors hover:border-accent hover:text-accent dark:border-white/15 dark:text-neutral-200"
+      className="inline-flex items-center gap-2 rounded-full border border-black/15 px-4 py-2 text-sm transition-colors hover:border-accent hover:text-accent dark:border-paper/15"
     >
       {icon}
       <span>{label}</span>
@@ -195,7 +203,7 @@ const aboutTiles = [1, 2, 3, 4, 5, 6];
 
 /* Shared classes for the rounded card containers used by Education / Experiences. */
 const card =
-  "relative rounded-2xl p-8 sm:p-10 border border-black/10 transition-colors hover:border-accent/50 dark:border-white/10";
+  "relative rounded-2xl p-8 sm:p-10 border border-black/10 transition-colors hover:border-accent/50 dark:border-paper/10";
 
 /* ---------------------------------------------------------------------------
    Page
@@ -204,19 +212,24 @@ export default function Home() {
   return (
     <main id="top">
       {/* Floating pill nav */}
-      <header className="fixed left-1/2 top-5 z-50 h-16 w-[92%] max-w-[1100px] -translate-x-1/2 rounded-full border border-black/10 bg-white/40 px-6 backdrop-blur-2xl dark:border-white/10 dark:bg-black/40">
+      <header className="fixed left-1/2 top-5 z-50 h-16 w-[92%] max-w-[1100px] -translate-x-1/2 rounded-full border border-black/10 bg-paper/40 px-5 backdrop-blur-2xl dark:border-paper/10 dark:bg-ink/50">
         <div className="flex h-full items-center justify-between">
           <a href="#top" className="group flex items-center gap-3">
-            <span className="grid h-8 w-8 place-items-center rounded-full border border-current font-serif text-sm lowercase transition-colors group-hover:border-accent group-hover:text-accent">
-              sc
+            <span className="grid h-9 w-9 place-items-center rounded-xl border border-accent/60 bg-accent/10 font-serif text-sm font-bold text-accent transition-transform group-hover:-rotate-6">
+              SC
             </span>
-            <span className="text-sm">© 2026 Supreeth Chittaluri</span>
+            <span className="hidden flex-col leading-tight sm:flex">
+              <span className="font-serif text-sm">Supreeth Chittaluri</span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.18em] opacity-55">
+                Software Engineer
+              </span>
+            </span>
           </a>
           <nav className="hidden items-center gap-6 text-sm md:flex">
             <a href="#projects" className="nav-link">Projects</a>
-            <a href="#education" className="nav-link">Education</a>
             <a href="#experiences" className="nav-link">Experiences</a>
             <a href="#skills" className="nav-link">Skills</a>
+            <a href="#education" className="nav-link">Education</a>
             <a href="#about" className="nav-link">About</a>
           </nav>
         </div>
@@ -225,14 +238,14 @@ export default function Home() {
       {/* Intro */}
       <section
         id="intro"
-        className="flex min-h-screen items-center justify-center bg-white px-6 dark:bg-[#0f0f14]"
+        className="flex min-h-screen items-center justify-center bg-paper px-6 dark:bg-ink"
       >
         <div className="flex max-w-xl flex-col gap-4 text-sm">
           <h1 className="font-serif text-4xl font-bold">Supreeth Chittaluri</h1>
-          <p className="text-neutral-700 dark:text-neutral-300">
+          <p className="opacity-70">
             Studying Computer Science at the University of Michigan.
           </p>
-          <p className="text-neutral-700 dark:text-neutral-300">
+          <p className="opacity-70">
             <Fill>a one-line personal sentence — what you like to do</Fill>
           </p>
           <div className="flex flex-wrap gap-3 pt-2">
@@ -244,14 +257,14 @@ export default function Home() {
       </section>
 
       {/* Projects */}
-      <section id="projects" className="bg-white py-32 dark:bg-[#0f0f14]">
+      <section id="projects" className="bg-paper py-32 dark:bg-ink">
         <SectionHeading n="01" eyebrow="Selected work" title="Projects" />
         <div className="mx-auto max-w-5xl px-6">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
             {projects.map((p) => (
               <details
                 key={p.title}
-                className="project-card relative rounded-2xl border border-black/10 transition-colors hover:border-accent/50 dark:border-white/10"
+                className="project-card relative rounded-2xl border border-black/10 transition-colors hover:border-accent/50 dark:border-paper/10"
               >
                 <summary className="flex w-full items-center justify-between p-6 text-left">
                   <h3 className="font-serif text-xl font-semibold">{p.title}</h3>
@@ -260,14 +273,12 @@ export default function Home() {
                 <div className="project-panel">
                   <div>
                     <div className="px-6 pb-6">
-                      <div className="mb-4 grid h-[180px] place-items-center overflow-hidden rounded-2xl border border-dashed border-black/20 p-4 text-center dark:border-white/20">
+                      <div className="mb-4 grid h-[180px] place-items-center overflow-hidden rounded-2xl border border-dashed border-black/20 p-4 text-center dark:border-paper/20">
                         <Fill>{p.imageNote}</Fill>
                       </div>
-                      <p className="mb-4 text-sm text-neutral-700 dark:text-neutral-300">
-                        {p.blurb}
-                      </p>
+                      <p className="mb-4 text-sm opacity-70">{p.blurb}</p>
                       {p.stack ? (
-                        <p className="mb-4 font-mono text-xs uppercase tracking-wide text-neutral-500">
+                        <p className="mb-4 font-mono text-xs uppercase tracking-wide opacity-55">
                           {p.stack}
                         </p>
                       ) : null}
@@ -284,9 +295,7 @@ export default function Home() {
                           </a>
                         ))}
                         {p.links.length === 0 ? (
-                          <span className="text-neutral-500">
-                            {p.status ?? "Coming Soon"}
-                          </span>
+                          <span className="opacity-55">{p.status ?? "Coming Soon"}</span>
                         ) : null}
                       </div>
                       {p.links.length === 0 && p.status === "source link pending" ? (
@@ -303,53 +312,23 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Education */}
-      <section id="education" className="bg-white py-32 dark:bg-[#0f0f14]">
-        <SectionHeading n="02" eyebrow="Coursework" title="Education" />
-        <div className="mx-auto max-w-4xl px-6">
-          <div className={card}>
-            <h3 className="mb-2 font-serif text-2xl font-semibold">
-              University of Michigan, College of Engineering
-            </h3>
-            <p className="mb-1 text-base text-neutral-700 dark:text-neutral-300">
-              Ann Arbor, MI
-            </p>
-            <p className="mb-4 text-lg font-medium text-neutral-900 dark:text-neutral-100">
-              Bachelor of Science, Computer Science
-            </p>
-            <p className="mb-2 font-mono text-xs uppercase tracking-wide text-neutral-500">
-              Relevant coursework
-            </p>
-            <ul className="grid grid-cols-1 gap-x-8 gap-y-1 text-sm text-neutral-700 sm:grid-cols-2 dark:text-neutral-300">
-              {umichCourses.map((c) => (
-                <li key={c.code}>
-                  {c.code} — {c.title}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
       {/* Experiences */}
-      <section id="experiences" className="bg-white py-32 dark:bg-[#0f0f14]">
-        <SectionHeading n="03" eyebrow="Timeline" title="Experiences" />
+      <section id="experiences" className="bg-paper py-32 dark:bg-ink">
+        <SectionHeading n="02" eyebrow="Timeline" title="Experiences" />
         <div className="mx-auto max-w-4xl px-6">
           <div className="flex flex-col gap-6">
             <div className={card}>
               <h3 className="mb-3 font-serif text-2xl font-semibold">
                 AI Product &amp; Engineering Intern
               </h3>
-              <p className="mb-2 text-lg font-medium text-neutral-800 dark:text-neutral-200">
-                OneStream Software
-              </p>
-              <p className="mb-1 text-base text-neutral-700 dark:text-neutral-300">
+              <p className="mb-2 text-lg font-medium opacity-90">OneStream Software</p>
+              <p className="mb-1 text-base opacity-70">
                 <Fill>dates</Fill>
               </p>
-              <p className="mb-4 text-base text-neutral-700 dark:text-neutral-300">
+              <p className="mb-4 text-base opacity-70">
                 <Fill>location</Fill>
               </p>
-              <p className="text-base leading-relaxed text-neutral-700 dark:text-neutral-300">
+              <p className="text-base leading-relaxed opacity-70">
                 AI &amp; Operational Analytics — <Fill>one-line description of the work</Fill>
               </p>
             </div>
@@ -358,16 +337,16 @@ export default function Home() {
               <h3 className="mb-3 font-serif text-2xl font-semibold">
                 <Fill>role</Fill>
               </h3>
-              <p className="mb-2 text-lg font-medium text-neutral-800 dark:text-neutral-200">
+              <p className="mb-2 text-lg font-medium opacity-90">
                 <Fill>organization</Fill>
               </p>
-              <p className="mb-1 text-base text-neutral-700 dark:text-neutral-300">
+              <p className="mb-1 text-base opacity-70">
                 <Fill>dates</Fill>
               </p>
-              <p className="mb-4 text-base text-neutral-700 dark:text-neutral-300">
+              <p className="mb-4 text-base opacity-70">
                 <Fill>location</Fill>
               </p>
-              <p className="text-base leading-relaxed text-neutral-700 dark:text-neutral-300">
+              <p className="text-base leading-relaxed opacity-70">
                 <Fill>one-line description</Fill>
               </p>
             </div>
@@ -376,16 +355,16 @@ export default function Home() {
               <h3 className="mb-3 font-serif text-2xl font-semibold">
                 <Fill>role</Fill>
               </h3>
-              <p className="mb-2 text-lg font-medium text-neutral-800 dark:text-neutral-200">
+              <p className="mb-2 text-lg font-medium opacity-90">
                 <Fill>organization</Fill>
               </p>
-              <p className="mb-1 text-base text-neutral-700 dark:text-neutral-300">
+              <p className="mb-1 text-base opacity-70">
                 <Fill>dates</Fill>
               </p>
-              <p className="mb-4 text-base text-neutral-700 dark:text-neutral-300">
+              <p className="mb-4 text-base opacity-70">
                 <Fill>location</Fill>
               </p>
-              <p className="text-base leading-relaxed text-neutral-700 dark:text-neutral-300">
+              <p className="text-base leading-relaxed opacity-70">
                 <Fill>one-line description</Fill>
               </p>
             </div>
@@ -394,14 +373,14 @@ export default function Home() {
       </section>
 
       {/* Skills */}
-      <section id="skills" className="bg-white py-32 dark:bg-[#0f0f14]">
-        <SectionHeading n="04" eyebrow="Toolkit" title="Main Skills" />
+      <section id="skills" className="bg-paper py-32 dark:bg-ink">
+        <SectionHeading n="03" eyebrow="Toolkit" title="Main Skills" />
         <div className="mx-auto flex max-w-[1000px] flex-wrap justify-center gap-4 px-4">
           {skills.map((s) => (
             <div
               key={s.name}
               title={s.name}
-              className="flex h-24 w-24 items-center justify-center rounded-2xl bg-black/[0.03] p-4 transition-colors hover:bg-accent/10 dark:bg-white/[0.06]"
+              className="flex h-24 w-24 items-center justify-center rounded-2xl bg-black/[0.03] p-4 transition-colors hover:bg-accent/10 dark:bg-paper/[0.06]"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
@@ -417,25 +396,54 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Education */}
+      <section id="education" className="bg-paper py-32 dark:bg-ink">
+        <SectionHeading n="04" eyebrow="Coursework" title="Education" />
+        <div className="mx-auto max-w-4xl px-6">
+          <div className={card}>
+            <h3 className="mb-2 font-serif text-2xl font-semibold">University of Michigan</h3>
+            <p className="mb-1 text-base opacity-70">Ann Arbor, MI</p>
+            <p className="mb-4 text-lg font-medium opacity-90">
+              Bachelor of Science, Computer Science
+            </p>
+            <p className="mb-2 font-mono text-xs uppercase tracking-wide opacity-55">
+              Relevant coursework
+            </p>
+            <ul className="grid grid-cols-1 gap-x-8 gap-y-1 text-sm opacity-70 sm:grid-cols-2">
+              {umichCourses.map((c) => (
+                <li key={c.code}>
+                  {c.code} — {c.title}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
+
       {/* About Me */}
-      <section id="about" className="bg-white py-32 dark:bg-[#0f0f14]">
+      <section id="about" className="bg-paper py-32 dark:bg-ink">
         <SectionHeading n="05" eyebrow="Off the clock" title="About Me" />
         <div className="mx-auto max-w-content-lg columns-2 gap-6 px-4 md:columns-3">
           {aboutTiles.map((_, i) => (
-            <div
-              key={i}
-              className="mb-8 break-inside-avoid text-center"
-            >
-              <div className="grid aspect-[4/5] place-items-center overflow-hidden rounded-2xl border border-dashed border-black/20 dark:border-white/20">
+            <div key={i} className="mb-8 break-inside-avoid text-center">
+              <div className="grid aspect-[4/5] place-items-center overflow-hidden rounded-2xl border border-dashed border-black/20 dark:border-paper/20">
                 <Fill>photo {i + 1}</Fill>
               </div>
-              <p className="mt-4 text-sm text-neutral-700 dark:text-neutral-300">
+              <p className="mt-4 text-sm opacity-70">
                 <Fill>one-line caption</Fill>
               </p>
             </div>
           ))}
         </div>
       </section>
+
+      {/* Footer */}
+      <footer className="flex flex-col items-center gap-3 border-t border-black/10 bg-paper px-6 py-10 text-xs opacity-70 sm:flex-row sm:justify-between dark:border-paper/10 dark:bg-ink">
+        <span>© 2026 Supreeth Chittaluri · Ann Arbor, MI</span>
+        <a href="#top" className="inline-flex items-center gap-1.5 hover:text-accent hover:opacity-100">
+          Back to top <ArrowUpIcon />
+        </a>
+      </footer>
     </main>
   );
 }

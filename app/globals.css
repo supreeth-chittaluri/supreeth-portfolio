@@ -6,7 +6,9 @@
 
 :root {
   color-scheme: light dark;
-  --accent: #e3b341;
+  --accent: #d9a441;
+  --ink: #14110d;
+  --paper: #f5f1e8;
 }
 
 html {
@@ -14,24 +16,24 @@ html {
 }
 
 body {
-  background: #ffffff;
-  color: #0a0a0a;
+  background: var(--paper);
+  color: var(--ink);
   -webkit-font-smoothing: antialiased;
 }
 
 html.dark body {
-  background: #0f0f14;
-  color: #ffffff;
+  background: var(--ink);
+  color: var(--paper);
 }
 
 ::selection {
-  background: #0a0a0a;
-  color: #ffffff;
+  background: var(--ink);
+  color: var(--paper);
 }
 
 html.dark ::selection {
-  background: #ffffff;
-  color: #0a0a0a;
+  background: var(--paper);
+  color: var(--ink);
 }
 
 /* ---------------------------------------------------------------------------
