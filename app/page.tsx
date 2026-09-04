@@ -1,3 +1,5 @@
+import { existsSync } from "node:fs";
+import path from "node:path";
 import type { ReactNode } from "react";
 
 /* ---------------------------------------------------------------------------
@@ -198,8 +200,41 @@ const umichCourses: Course[] = [
   { code: "MATH 215", title: "Multivariable and Vector Calculus" }
 ];
 
-/* Personal "About Me" tiles — no captions/photos on file yet. */
-const aboutTiles = [1, 2, 3, 4, 5, 6];
+type AboutTile = {
+  file: string; // expected path under /public/about — drop the photo in with this filename
+  caption: string;
+  rotate: string; // small collage-style tilt
+};
+
+/* Personal "About Me" tiles. Captions are set — drop the matching photo into
+   public/about/<file> and it will appear automatically. */
+const aboutTiles: AboutTile[] = [
+  {
+    file: "pizza.jpg",
+    caption: "Always chasing the next great meal — this one's L'Industrie Pizzeria in NYC.",
+    rotate: "-rotate-2"
+  },
+  {
+    file: "friends-1.jpg",
+    caption: "Nothing beats a night out with the guys.",
+    rotate: "rotate-1"
+  },
+  {
+    file: "friends-2.jpg",
+    caption: "Always down to hang out with my friends.",
+    rotate: "-rotate-1"
+  },
+  {
+    file: "sunset-1.jpg",
+    caption: "I love traveling — this sunset was in LA, California.",
+    rotate: "rotate-2"
+  },
+  {
+    file: "sunset-2.jpg",
+    caption: "Another one from LA — sunsets like this never get old.",
+    rotate: "-rotate-2"
+  }
+];
 
 /* Shared classes for the rounded card containers used by Education / Experiences. */
 const card =
@@ -226,8 +261,8 @@ export default function Home() {
             </span>
           </a>
           <nav className="hidden items-center gap-6 text-sm md:flex">
-            <a href="#projects" className="nav-link">Projects</a>
             <a href="#experiences" className="nav-link">Experiences</a>
+            <a href="#projects" className="nav-link">Projects</a>
             <a href="#skills" className="nav-link">Skills</a>
             <a href="#education" className="nav-link">Education</a>
             <a href="#about" className="nav-link">About</a>
@@ -256,65 +291,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Projects */}
-      <section id="projects" className="bg-paper py-32 dark:bg-ink">
-        <SectionHeading n="01" eyebrow="Selected work" title="Projects" />
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            {projects.map((p) => (
-              <details
-                key={p.title}
-                className="project-card relative rounded-2xl border border-black/10 transition-colors hover:border-accent/50 dark:border-paper/10"
-              >
-                <summary className="flex w-full items-center justify-between p-6 text-left">
-                  <h3 className="font-serif text-xl font-semibold">{p.title}</h3>
-                  <span className="summary-toggle text-xl">＋</span>
-                </summary>
-                <div className="project-panel">
-                  <div>
-                    <div className="px-6 pb-6">
-                      <div className="mb-4 grid h-[180px] place-items-center overflow-hidden rounded-2xl border border-dashed border-black/20 p-4 text-center dark:border-paper/20">
-                        <Fill>{p.imageNote}</Fill>
-                      </div>
-                      <p className="mb-4 text-sm opacity-70">{p.blurb}</p>
-                      {p.stack ? (
-                        <p className="mb-4 font-mono text-xs uppercase tracking-wide opacity-55">
-                          {p.stack}
-                        </p>
-                      ) : null}
-                      <div className="flex flex-wrap gap-6 text-sm">
-                        {p.links.map((l) => (
-                          <a
-                            key={l.label}
-                            href={l.href}
-                            target="_blank"
-                            rel="noreferrer"
-                            className="underline underline-offset-4 hover:text-accent"
-                          >
-                            {l.label}
-                          </a>
-                        ))}
-                        {p.links.length === 0 ? (
-                          <span className="opacity-55">{p.status ?? "Coming Soon"}</span>
-                        ) : null}
-                      </div>
-                      {p.links.length === 0 && p.status === "source link pending" ? (
-                        <p className="mt-3">
-                          <Fill>verified {p.title} repository / demo URL</Fill>
-                        </p>
-                      ) : null}
-                    </div>
-                  </div>
-                </div>
-              </details>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Experiences */}
       <section id="experiences" className="bg-paper py-32 dark:bg-ink">
-        <SectionHeading n="02" eyebrow="Timeline" title="Experiences" />
+        <SectionHeading n="01" eyebrow="Timeline" title="Experiences" />
         <div className="mx-auto max-w-4xl px-6">
           <div className="flex flex-col gap-6">
             <div className={card}>
@@ -372,6 +351,62 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Projects */}
+      <section id="projects" className="bg-paper py-32 dark:bg-ink">
+        <SectionHeading n="02" eyebrow="Selected work" title="Projects" />
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {projects.map((p) => (
+              <details
+                key={p.title}
+                className="project-card relative rounded-2xl border border-black/10 transition-colors hover:border-accent/50 dark:border-paper/10"
+              >
+                <summary className="flex w-full items-center justify-between p-6 text-left">
+                  <h3 className="font-serif text-xl font-semibold">{p.title}</h3>
+                  <span className="summary-toggle text-xl">＋</span>
+                </summary>
+                <div className="project-panel">
+                  <div>
+                    <div className="px-6 pb-6">
+                      <div className="mb-4 grid h-[180px] place-items-center overflow-hidden rounded-2xl border border-dashed border-black/20 p-4 text-center dark:border-paper/20">
+                        <Fill>{p.imageNote}</Fill>
+                      </div>
+                      <p className="mb-4 text-sm opacity-70">{p.blurb}</p>
+                      {p.stack ? (
+                        <p className="mb-4 font-mono text-xs uppercase tracking-wide opacity-55">
+                          {p.stack}
+                        </p>
+                      ) : null}
+                      <div className="flex flex-wrap gap-6 text-sm">
+                        {p.links.map((l) => (
+                          <a
+                            key={l.label}
+                            href={l.href}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="underline underline-offset-4 hover:text-accent"
+                          >
+                            {l.label}
+                          </a>
+                        ))}
+                        {p.links.length === 0 ? (
+                          <span className="opacity-55">{p.status ?? "Coming Soon"}</span>
+                        ) : null}
+                      </div>
+                      {p.links.length === 0 && p.status === "source link pending" ? (
+                        <p className="mt-3">
+                          <Fill>verified {p.title} repository / demo URL</Fill>
+                        </p>
+                      ) : null}
+                    </div>
+                  </div>
+                </div>
+              </details>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Skills */}
       <section id="skills" className="bg-paper py-32 dark:bg-ink">
         <SectionHeading n="03" eyebrow="Toolkit" title="Main Skills" />
@@ -379,18 +414,20 @@ export default function Home() {
           {skills.map((s) => (
             <div
               key={s.name}
-              title={s.name}
-              className="flex h-24 w-24 items-center justify-center rounded-2xl bg-black/[0.03] p-4 transition-colors hover:bg-accent/10 dark:bg-paper/[0.06]"
+              className="flex w-24 flex-col items-center gap-2"
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={s.icon}
-                alt={s.name}
-                width={48}
-                height={48}
-                loading="lazy"
-                className="h-12 w-12 select-none object-contain"
-              />
+              <div className="flex h-24 w-24 items-center justify-center rounded-2xl bg-black/[0.03] p-4 transition-colors hover:bg-accent/10 dark:bg-paper/[0.06]">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={s.icon}
+                  alt={s.name}
+                  width={48}
+                  height={48}
+                  loading="lazy"
+                  className="h-12 w-12 select-none object-contain"
+                />
+              </div>
+              <span className="text-center text-xs opacity-70">{s.name}</span>
             </div>
           ))}
         </div>
@@ -424,16 +461,29 @@ export default function Home() {
       <section id="about" className="bg-paper py-32 dark:bg-ink">
         <SectionHeading n="05" eyebrow="Off the clock" title="About Me" />
         <div className="mx-auto max-w-content-lg columns-2 gap-6 px-4 md:columns-3">
-          {aboutTiles.map((_, i) => (
-            <div key={i} className="mb-8 break-inside-avoid text-center">
-              <div className="grid aspect-[4/5] place-items-center overflow-hidden rounded-2xl border border-dashed border-black/20 dark:border-paper/20">
-                <Fill>photo {i + 1}</Fill>
+          {aboutTiles.map((tile) => {
+            const hasPhoto = existsSync(path.join(process.cwd(), "public", "about", tile.file));
+            return (
+              <div
+                key={tile.file}
+                className={`mb-8 break-inside-avoid text-center transition-transform hover:rotate-0 ${tile.rotate}`}
+              >
+                {hasPhoto ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={`/about/${tile.file}`}
+                    alt={tile.caption}
+                    className="w-full rounded-lg border-4 border-paper object-cover shadow-lg dark:border-paper/90"
+                  />
+                ) : (
+                  <div className="grid aspect-[4/5] place-items-center overflow-hidden rounded-lg border-4 border-dashed border-black/20 p-4 dark:border-paper/20">
+                    <Fill>drop photo in as public/about/{tile.file}</Fill>
+                  </div>
+                )}
+                <p className="mt-4 text-sm opacity-70">{tile.caption}</p>
               </div>
-              <p className="mt-4 text-sm opacity-70">
-                <Fill>one-line caption</Fill>
-              </p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
