@@ -29,7 +29,7 @@ function SectionHeading({
   title: string;
 }) {
   return (
-    <div className="mb-16 flex flex-col items-center gap-3 text-center">
+    <div className="mb-12 flex flex-col items-center gap-3 text-center">
       <span className="font-mono text-xs uppercase tracking-[0.25em] text-accent">
         {n} — {eyebrow}
       </span>
@@ -215,20 +215,20 @@ type AboutGroup = {
    photos render as a small side-by-side pair under one shared caption. */
 const aboutGroups: AboutGroup[] = [
   {
-    photos: [{ file: "pizza.jpg", rotate: "-rotate-2" }],
+    photos: [{ file: "pizza.jpg", rotate: "-rotate-1" }],
     caption: "Always chasing the next great meal — this one's L'Industrie Pizzeria in NYC."
   },
   {
     photos: [
-      { file: "friends-1.jpg", rotate: "-rotate-2" },
-      { file: "friends-2.jpg", rotate: "rotate-2" }
+      { file: "friends-1.jpg", rotate: "" },
+      { file: "friends-2.jpg", rotate: "" }
     ],
     caption: "Always love hanging out with my friends."
   },
   {
     photos: [
-      { file: "sunset-1.jpg", rotate: "rotate-2" },
-      { file: "sunset-2.jpg", rotate: "-rotate-2" }
+      { file: "sunset-1.jpg", rotate: "" },
+      { file: "sunset-2.jpg", rotate: "" }
     ],
     caption: "I love traveling — these were sunsets in LA, California."
   }
@@ -290,7 +290,7 @@ export default function Home() {
       </section>
 
       {/* Experiences */}
-      <section id="experiences" className="bg-paper py-32 dark:bg-ink">
+      <section id="experiences" className="bg-paper py-24 dark:bg-ink">
         <SectionHeading n="01" eyebrow="Timeline" title="Experiences" />
         <div className="mx-auto max-w-4xl px-6">
           <div className="flex flex-col gap-6">
@@ -350,7 +350,7 @@ export default function Home() {
       </section>
 
       {/* Projects */}
-      <section id="projects" className="bg-paper py-32 dark:bg-ink">
+      <section id="projects" className="bg-paper py-24 dark:bg-ink">
         <SectionHeading n="02" eyebrow="Selected work" title="Projects" />
         <div className="mx-auto max-w-5xl px-6">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -406,7 +406,7 @@ export default function Home() {
       </section>
 
       {/* Skills */}
-      <section id="skills" className="bg-paper py-32 dark:bg-ink">
+      <section id="skills" className="bg-paper py-24 dark:bg-ink">
         <SectionHeading n="03" eyebrow="Toolkit" title="Main Skills" />
         <div className="mx-auto flex max-w-[1000px] flex-wrap justify-center gap-4 px-4">
           {skills.map((s) => (
@@ -432,7 +432,7 @@ export default function Home() {
       </section>
 
       {/* Education */}
-      <section id="education" className="bg-paper py-32 dark:bg-ink">
+      <section id="education" className="bg-paper py-24 dark:bg-ink">
         <SectionHeading n="04" eyebrow="Coursework" title="Education" />
         <div className="mx-auto max-w-4xl px-6">
           <div className={card}>
@@ -456,12 +456,12 @@ export default function Home() {
       </section>
 
       {/* About Me */}
-      <section id="about" className="bg-paper py-32 dark:bg-ink">
+      <section id="about" className="bg-paper py-24 dark:bg-ink">
         <SectionHeading n="05" eyebrow="Off the clock" title="About Me" />
-        <div className="mx-auto max-w-content-lg columns-2 gap-6 px-4 md:columns-3">
+        <div className="mx-auto grid max-w-content-lg grid-cols-1 gap-x-8 gap-y-12 px-4 sm:grid-cols-3">
           {aboutGroups.map((group) => (
-            <div key={group.caption} className="mb-8 break-inside-avoid text-center">
-              <div className={group.photos.length === 2 ? "grid grid-cols-2 gap-2" : ""}>
+            <div key={group.caption} className="text-center">
+              <div className={group.photos.length === 2 ? "grid grid-cols-2 gap-3" : ""}>
                 {group.photos.map((photo) => {
                   const hasPhoto = existsSync(path.join(process.cwd(), "public", "about", photo.file));
                   return hasPhoto ? (
@@ -475,7 +475,7 @@ export default function Home() {
                   ) : (
                     <div
                       key={photo.file}
-                      className={`grid aspect-[4/5] place-items-center overflow-hidden rounded-lg border-4 border-dashed border-black/20 p-4 transition-transform hover:rotate-0 dark:border-paper/20 ${photo.rotate}`}
+                      className={`grid aspect-[4/5] place-items-center overflow-hidden rounded-lg border-4 border-dashed border-black/20 p-3 text-center transition-transform hover:rotate-0 dark:border-paper/20 ${photo.rotate}`}
                     >
                       <Fill>drop photo in as public/about/{photo.file}</Fill>
                     </div>
