@@ -8,6 +8,7 @@ import type { ReactNode } from "react";
 const githubUrl = "https://github.com/supreeth-chittaluri";
 const linkedInUrl = "https://www.linkedin.com/in/supreeth-chittaluri-044a42276";
 const email = "supreetc@umich.edu";
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 /* Renders a visible "fill in later" marker so unfinished spots are easy to find. */
 function Fill({ children }: { children: ReactNode }) {
@@ -463,7 +464,7 @@ export default function Home() {
                 {hasPhoto ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    src={`/about/${tile.file}`}
+                    src={`${basePath}/about/${tile.file}`}
                     alt={tile.caption}
                     className="aspect-[4/5] w-full rounded-lg border-4 border-paper object-cover shadow-lg dark:border-paper/90"
                   />
