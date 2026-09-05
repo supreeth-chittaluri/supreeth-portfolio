@@ -1,3 +1,3 @@
 # Supreeth Chittaluri — Portfolio
 
-https://supreeth-portfolio-drab.vercel.app
+https://supreethchittaluri.vercel.app
