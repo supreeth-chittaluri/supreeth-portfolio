@@ -1,7 +1,7 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
 import type { ReactNode } from "react";
-import Typewriter from "./typewriter";
+import TypedIntro from "./typewriter";
 
 /* ---------------------------------------------------------------------------
    Contact + identity
@@ -290,24 +290,28 @@ type AboutTile = {
    appear automatically. */
 const aboutTiles: AboutTile[] = [
   {
-    file: "pizza.jpg",
-    caption: "Always chasing the next great meal. This one's L'Industrie Pizzeria in NYC."
-  },
-  {
     file: "friends-1.jpg",
-    caption: "Always love hanging out with my friends."
+    caption: "Always a good time with my friends"
   },
   {
     file: "friends-2.jpg",
-    caption: "Always love hanging out with my friends."
+    caption: "Some of my favorite memories are with this group"
   },
   {
-    file: "sunset-1.jpg",
-    caption: "I love traveling. These were sunsets in LA, California."
+    file: "pizza.jpg",
+    caption: "Chasing the next great meal at L'Industrie Pizzeria in NYC"
   },
   {
-    file: "sunset-2.jpg",
-    caption: "I love traveling. These were sunsets in LA, California."
+    file: "sunsets.jpg",
+    caption: "Traveling for views like these sunsets in LA, California"
+  },
+  {
+    file: "basketball.jpg",
+    caption: "Basketball has always been my favorite sport to watch and play"
+  },
+  {
+    file: "big-house.jpg",
+    caption: "Catching Michigan football games at the Big House"
   }
 ];
 
@@ -351,14 +355,7 @@ export default function Home() {
         className="flex min-h-screen items-center justify-center bg-paper px-6 dark:bg-ink"
       >
         <div className="flex w-full max-w-2xl flex-col gap-4 text-sm">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
-            Hello, I am
-          </p>
-          <h1 className="font-serif text-4xl font-bold sm:text-5xl">Supreeth Chittaluri.</h1>
-          <p className="text-base opacity-70">
-            I study Computer Science at the University of Michigan.
-          </p>
-          <Typewriter text="I build software that turns complex systems and noisy data into tools people can actually use." />
+          <TypedIntro />
           <div className="flex flex-wrap gap-3 pt-3">
             <ContactChip href={`mailto:${email}`} icon={<MailIcon />} label={email} external={false} />
             <ContactChip href={linkedInUrl} icon={<LinkedInIcon />} label="LinkedIn" />
