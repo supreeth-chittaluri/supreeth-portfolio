@@ -74,6 +74,14 @@ function ArrowUpIcon() {
   );
 }
 
+function ArrowOutIcon() {
+  return (
+    <svg viewBox="0 0 20 20" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M6 14 14 6M8 6h6v6" />
+    </svg>
+  );
+}
+
 /* Pill-style contact link — used for email / LinkedIn / GitHub instead of a
    plain underline so the intro reads as a proper contact row. */
 function ContactChip({
@@ -99,6 +107,34 @@ function ContactChip({
   );
 }
 
+function MiniRedisBenchmark() {
+  return (
+    <figure
+      className="mini-redis-benchmark"
+      aria-label="MiniRedis benchmark: more than 52,000 operations per second across 25,000 requests"
+    >
+      <div className="mini-redis-toolbar">
+        <span className="mini-redis-status" />
+        <span>localhost:6379</span>
+        <span className="ml-auto opacity-50">benchmark</span>
+      </div>
+      <div className="mini-redis-terminal" aria-hidden="true">
+        <p><span>$</span> ./benchmark --requests 25000</p>
+        <p><span>→</span> clients connected concurrently</p>
+        <p><span>→</span> SET · GET · DEL · EXISTS · EXPIRE · TTL</p>
+      </div>
+      <div className="mini-redis-result">
+        <div>
+          <strong>52K+</strong>
+          <span>operations / second</span>
+        </div>
+        <div className="mini-redis-bar" aria-hidden="true"><span /></div>
+        <p>25,000 requests completed</p>
+      </div>
+    </figure>
+  );
+}
+
 /* ---------------------------------------------------------------------------
    Data
    --------------------------------------------------------------------------- */
@@ -106,49 +142,80 @@ type ProjectLink = { label: string; href: string };
 
 type Project = {
   title: string;
-  blurb: string;
-  stack?: string;
+  category: string;
+  summary: string;
+  description: string;
+  why: string;
+  stack: string;
   links: ProjectLink[];
-  status?: string; // shown instead of links when there is nothing to link yet
-  imageNote: ReactNode; // placeholder text for the project image
+  image?: string;
+  imageAlt?: string;
+  metric?: { value: string; label: string };
 };
 
 const projects: Project[] = [
   {
-    title: "MiniRedis",
-    blurb:
-      "A Redis-style in-memory key-value database built around concurrent TCP clients, expiration, eviction, persistence, and measured throughput.",
-    stack: "C++20 · TCP/IP · multithreading · CMake",
-    links: [],
-    status: "source link pending",
-    imageNote: "MiniRedis screenshot or benchmark chart"
+    title: "a2transit",
+    category: "Transit routing",
+    summary: "One trip planner for Ann Arbor's two bus networks.",
+    description:
+      "Combines TheRide and U-M MBus schedules, walking transfers, live vehicles, and delays into one door-to-door route search.",
+    why:
+      "As a Michigan student, I wanted the overlapping systems I use around campus to feel like one network—not two disconnected maps.",
+    stack: "Python · FastAPI · PostGIS · Redis · React · MapLibre · GTFS",
+    links: [
+      { label: "Live project", href: "https://a2transit.vercel.app" },
+      { label: "GitHub", href: "https://github.com/supreeth-chittaluri/a2transit" }
+    ],
+    image: "/projects/a2transit.webp",
+    imageAlt:
+      "a2transit planning a route from Blake Transit Center to Pierpont Commons across a live map of Ann Arbor"
+  },
+  {
+    title: "Pulse",
+    category: "Market intelligence",
+    summary: "Finds stock-discussion spikes that are unusual for each ticker.",
+    description:
+      "Collects market conversations, scores ticker sentiment, and compares each symbol with its own rolling baseline before surfacing a spike.",
+    why:
+      "I built Pulse to separate meaningful shifts from the constant noise around popular stocks—and to make that signal useful without charging the public.",
+    stack: "TypeScript · Node.js · PostgreSQL · React · Gemini · SSE",
+    links: [
+      { label: "Live project", href: "https://pulse-b8zd.onrender.com" },
+      { label: "GitHub", href: "https://github.com/supreeth-chittaluri/pulse" }
+    ],
+    image: "/projects/pulse.webp",
+    imageAlt:
+      "Pulse dashboard showing NVDA sentiment and mention volume alongside a live stream of scored market discussions"
   },
   {
     title: "Undrift",
-    blurb:
-      "A full-stack developer skill-decay platform that makes practice patterns visible through GitHub activity and LLM classification.",
-    stack: "Python · FastAPI · React · PostgreSQL · GitHub API · LLM",
-    links: [],
-    status: "source link pending",
-    imageNote: "Undrift dashboard screenshot"
+    category: "Developer analytics",
+    summary: "Turns coding history into an evidence-backed view of skill freshness.",
+    description:
+      "Classifies GitHub activity and translates it into explainable freshness, depth, momentum, and skill-decay forecasts.",
+    why:
+      "I built Undrift after realizing a résumé says what I have learned, but not what I have practiced lately—or what I should revisit next.",
+    stack: "Python · FastAPI · PostgreSQL · React · GitHub API · Claude",
+    links: [
+      { label: "Live project", href: "https://undrift-supreeth-chittaluri.vercel.app" },
+      { label: "GitHub", href: "https://github.com/supreeth-chittaluri/undrift" }
+    ],
+    image: "/projects/undrift.webp",
+    imageAlt:
+      "Undrift dashboard showing skill freshness, depth, momentum, and decay forecasts derived from GitHub activity"
   },
   {
-    title: "a2transit",
-    blurb:
-      "A multimodal Ann Arbor transit planner connecting TheRide and U-M MBus data into one route-planning experience.",
-    stack: "FastAPI · PostGIS · Redis · React · MapLibre · GTFS",
+    title: "MiniRedis",
+    category: "Systems engineering",
+    summary: "A Redis-style server built to understand concurrency from the inside.",
+    description:
+      "Serves concurrent TCP clients with expiration, LRU eviction, append-only persistence, and six familiar Redis commands.",
+    why:
+      "I built MiniRedis because reading about caches and locks is different from designing one, breaking it under load, and measuring the result.",
+    stack: "C++20 · TCP/IP · multithreading · CMake",
     links: [],
-    status: "source link pending",
-    imageNote: "a2transit map screenshot"
-  },
-  {
-    title: "Real-time Stock App",
-    blurb:
-      "Planned and in development — a focused product view over real-time market signals.",
-    stack: "planned / in development",
-    links: [],
-    status: "Coming Soon",
-    imageNote: "Stock app concept mockup"
+    metric: { value: "52K+", label: "operations per second" }
   }
 ];
 
@@ -350,50 +417,66 @@ export default function Home() {
       {/* Projects */}
       <section id="projects" className="bg-paper py-24 dark:bg-ink">
         <SectionHeading n="02" eyebrow="Selected work" title="Projects" />
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            {projects.map((p) => (
+        <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
+          <div className="project-list">
+            {projects.map((p, index) => (
               <details
                 key={p.title}
-                className="project-card relative rounded-2xl border border-black/10 transition-colors hover:border-accent/50 dark:border-paper/10"
+                className="project-row"
               >
-                <summary className="flex w-full items-center justify-between p-6 text-left">
-                  <h3 className="font-serif text-xl font-semibold">{p.title}</h3>
-                  <span className="summary-toggle text-xl">＋</span>
+                <summary className="project-summary">
+                  <span className="project-number">{String(index + 1).padStart(2, "0")}</span>
+                  <span className="project-heading">
+                    <span className="project-category">{p.category}</span>
+                    <span className="font-serif text-2xl font-semibold sm:text-3xl">{p.title}</span>
+                  </span>
+                  <span className="project-summary-copy">{p.summary}</span>
+                  <span className="project-toggle" aria-hidden="true">＋</span>
                 </summary>
                 <div className="project-panel">
-                  <div>
-                    <div className="px-6 pb-6">
-                      <div className="mb-4 grid h-[180px] place-items-center overflow-hidden rounded-2xl border border-dashed border-black/20 p-4 text-center dark:border-paper/20">
-                        <Fill>{p.imageNote}</Fill>
+                  <div className="project-panel-inner">
+                    <div className="project-visual-wrap">
+                      {p.image ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={`${basePath}${p.image}`}
+                          alt={p.imageAlt ?? ""}
+                          width={p.title === "Undrift" ? 1200 : 880}
+                          height={p.title === "Undrift" ? 890 : 539}
+                          loading="lazy"
+                          className="project-image"
+                        />
+                      ) : (
+                        <MiniRedisBenchmark />
+                      )}
+                    </div>
+                    <div className="project-copy">
+                      <div>
+                        <p className="project-copy-label">What it does</p>
+                        <p>{p.description}</p>
                       </div>
-                      <p className="mb-4 text-sm opacity-70">{p.blurb}</p>
-                      {p.stack ? (
-                        <p className="mb-4 font-mono text-xs uppercase tracking-wide opacity-55">
-                          {p.stack}
-                        </p>
-                      ) : null}
-                      <div className="flex flex-wrap gap-6 text-sm">
+                      <div>
+                        <p className="project-copy-label">Why I built it</p>
+                        <p>{p.why}</p>
+                      </div>
+                      <p className="font-mono text-xs uppercase tracking-[0.08em] opacity-55">
+                        {p.stack}
+                      </p>
+                      <div className="flex flex-wrap gap-3">
                         {p.links.map((l) => (
                           <a
                             key={l.label}
                             href={l.href}
                             target="_blank"
                             rel="noreferrer"
-                            className="underline underline-offset-4 hover:text-accent"
+                            className="project-link"
                           >
+                            {l.label === "GitHub" ? <GitHubIcon /> : null}
                             {l.label}
+                            {l.label !== "GitHub" ? <ArrowOutIcon /> : null}
                           </a>
                         ))}
-                        {p.links.length === 0 ? (
-                          <span className="opacity-55">{p.status ?? "Coming Soon"}</span>
-                        ) : null}
                       </div>
-                      {p.links.length === 0 && p.status === "source link pending" ? (
-                        <p className="mt-3">
-                          <Fill>verified {p.title} repository / demo URL</Fill>
-                        </p>
-                      ) : null}
                     </div>
                   </div>
                 </div>
