@@ -202,34 +202,31 @@ const umichCourses: Course[] = [
 
 type AboutTile = {
   file: string; // expected path under /public/about — drop the photo in with this filename
-  rotate: string; // small collage-style tilt
-};
-
-type AboutGroup = {
-  photos: AboutTile[]; // 1 or 2 photos sharing a single caption below
   caption: string;
 };
 
-/* Personal "About Me" tiles. Captions are set — drop the matching photo into
-   public/about/<file> and it will appear automatically. Groups with two
-   photos render as a small side-by-side pair under one shared caption. */
-const aboutGroups: AboutGroup[] = [
+/* Personal "About Me" tiles, plain grid — one photo per tile, one caption
+   under each. Drop the matching photo into public/about/<file> and it will
+   appear automatically. */
+const aboutTiles: AboutTile[] = [
   {
-    photos: [{ file: "pizza.jpg", rotate: "-rotate-1" }],
+    file: "pizza.jpg",
     caption: "Always chasing the next great meal — this one's L'Industrie Pizzeria in NYC."
   },
   {
-    photos: [
-      { file: "friends-1.jpg", rotate: "" },
-      { file: "friends-2.jpg", rotate: "" }
-    ],
+    file: "friends-1.jpg",
     caption: "Always love hanging out with my friends."
   },
   {
-    photos: [
-      { file: "sunset-1.jpg", rotate: "" },
-      { file: "sunset-2.jpg", rotate: "" }
-    ],
+    file: "friends-2.jpg",
+    caption: "Always love hanging out with my friends."
+  },
+  {
+    file: "sunset-1.jpg",
+    caption: "I love traveling — these were sunsets in LA, California."
+  },
+  {
+    file: "sunset-2.jpg",
     caption: "I love traveling — these were sunsets in LA, California."
   }
 ];
@@ -444,9 +441,9 @@ export default function Home() {
             <p className="mb-2 font-mono text-xs uppercase tracking-wide opacity-55">
               Relevant coursework
             </p>
-            <ul className="grid grid-cols-1 gap-x-8 gap-y-1 text-sm opacity-70 sm:grid-cols-2">
+            <ul className="columns-1 gap-x-8 text-sm opacity-70 sm:columns-2">
               {umichCourses.map((c) => (
-                <li key={c.code}>
+                <li key={c.code} className="mb-2 break-inside-avoid">
                   {c.code} — {c.title}
                 </li>
               ))}
@@ -458,33 +455,27 @@ export default function Home() {
       {/* About Me */}
       <section id="about" className="bg-paper py-24 dark:bg-ink">
         <SectionHeading n="05" eyebrow="Off the clock" title="About Me" />
-        <div className="mx-auto grid max-w-content-lg grid-cols-1 gap-x-8 gap-y-12 px-4 sm:grid-cols-3">
-          {aboutGroups.map((group) => (
-            <div key={group.caption} className="text-center">
-              <div className={group.photos.length === 2 ? "grid grid-cols-2 gap-3" : ""}>
-                {group.photos.map((photo) => {
-                  const hasPhoto = existsSync(path.join(process.cwd(), "public", "about", photo.file));
-                  return hasPhoto ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      key={photo.file}
-                      src={`/about/${photo.file}`}
-                      alt={group.caption}
-                      className={`aspect-[4/5] w-full rounded-lg border-4 border-paper object-cover shadow-lg transition-transform hover:rotate-0 dark:border-paper/90 ${photo.rotate}`}
-                    />
-                  ) : (
-                    <div
-                      key={photo.file}
-                      className={`grid aspect-[4/5] place-items-center overflow-hidden rounded-lg border-4 border-dashed border-black/20 p-3 text-center transition-transform hover:rotate-0 dark:border-paper/20 ${photo.rotate}`}
-                    >
-                      <Fill>drop photo in as public/about/{photo.file}</Fill>
-                    </div>
-                  );
-                })}
+        <div className="mx-auto grid max-w-content-lg grid-cols-2 gap-x-6 gap-y-10 px-4 sm:grid-cols-3">
+          {aboutTiles.map((tile) => {
+            const hasPhoto = existsSync(path.join(process.cwd(), "public", "about", tile.file));
+            return (
+              <div key={tile.file} className="text-center">
+                {hasPhoto ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={`/about/${tile.file}`}
+                    alt={tile.caption}
+                    className="aspect-[4/5] w-full rounded-lg border-4 border-paper object-cover shadow-lg dark:border-paper/90"
+                  />
+                ) : (
+                  <div className="grid aspect-[4/5] place-items-center overflow-hidden rounded-lg border-4 border-dashed border-black/20 p-3 text-center dark:border-paper/20">
+                    <Fill>drop photo in as public/about/{tile.file}</Fill>
+                  </div>
+                )}
+                <p className="mt-4 text-sm opacity-70">{tile.caption}</p>
               </div>
-              <p className="mt-4 text-sm opacity-70">{group.caption}</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </section>
 
