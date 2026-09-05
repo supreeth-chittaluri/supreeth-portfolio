@@ -1,6 +1,7 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
 import type { ReactNode } from "react";
+import Typewriter from "./typewriter";
 
 /* ---------------------------------------------------------------------------
    Contact + identity
@@ -32,7 +33,7 @@ function SectionHeading({
   return (
     <div className="mb-12 flex flex-col items-center gap-3 text-center">
       <span className="font-mono text-xs uppercase tracking-[0.25em] text-accent">
-        {n} — {eyebrow}
+        {n} · {eyebrow}
       </span>
       <h2 className="font-serif text-4xl font-semibold">{title}</h2>
     </div>
@@ -62,6 +63,15 @@ function GitHubIcon() {
   return (
     <svg viewBox="0 0 16 16" width="16" height="16" fill="currentColor" aria-hidden="true">
       <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
+    </svg>
+  );
+}
+
+function DocumentIcon() {
+  return (
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M6.5 3h7l4 4v14h-11a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z" />
+      <path d="M13.5 3v5h4M8 12h6M8 16h6" />
     </svg>
   );
 }
@@ -151,6 +161,7 @@ type Project = {
   image?: string;
   imageAlt?: string;
   metric?: { value: string; label: string };
+  status?: string;
 };
 
 const projects: Project[] = [
@@ -159,9 +170,9 @@ const projects: Project[] = [
     category: "Transit routing",
     summary: "One trip planner for Ann Arbor's two bus networks.",
     description:
-      "Combines TheRide and U-M MBus schedules, walking transfers, live vehicles, and delays into one door-to-door route search.",
+      "Combines TheRide and U-M MBus schedules, walking transfers, live vehicles, and delays into one door to door route search.",
     why:
-      "As a Michigan student, I wanted the overlapping systems I use around campus to feel like one network—not two disconnected maps.",
+      "As a Michigan student, I wanted the overlapping systems I use around campus to feel like one network instead of two disconnected maps.",
     stack: "Python · FastAPI · PostGIS · Redis · React · MapLibre · GTFS",
     links: [
       { label: "Live project", href: "https://a2transit.vercel.app" },
@@ -174,11 +185,11 @@ const projects: Project[] = [
   {
     title: "Pulse",
     category: "Market intelligence",
-    summary: "Finds stock-discussion spikes that are unusual for each ticker.",
+    summary: "Finds stock discussion spikes that are unusual for each ticker.",
     description:
       "Collects market conversations, scores ticker sentiment, and compares each symbol with its own rolling baseline before surfacing a spike.",
     why:
-      "I built Pulse to separate meaningful shifts from the constant noise around popular stocks—and to make that signal useful without charging the public.",
+      "I built Pulse to separate meaningful shifts from the constant noise around popular stocks and make that signal useful without charging the public.",
     stack: "TypeScript · Node.js · PostgreSQL · React · Gemini · SSE",
     links: [
       { label: "Live project", href: "https://pulse-b8zd.onrender.com" },
@@ -191,11 +202,11 @@ const projects: Project[] = [
   {
     title: "Undrift",
     category: "Developer analytics",
-    summary: "Turns coding history into an evidence-backed view of skill freshness.",
+    summary: "Turns coding history into an evidence backed view of skill freshness.",
     description:
-      "Classifies GitHub activity and translates it into explainable freshness, depth, momentum, and skill-decay forecasts.",
+      "Classifies GitHub activity and translates it into explainable freshness, depth, momentum, and skill decay forecasts.",
     why:
-      "I built Undrift after realizing a résumé says what I have learned, but not what I have practiced lately—or what I should revisit next.",
+      "I built Undrift after realizing a résumé says what I have learned, but not what I have practiced lately or what I should revisit next.",
     stack: "Python · FastAPI · PostgreSQL · React · GitHub API · Claude",
     links: [
       { label: "Live project", href: "https://undrift-supreeth-chittaluri.vercel.app" },
@@ -208,14 +219,15 @@ const projects: Project[] = [
   {
     title: "MiniRedis",
     category: "Systems engineering",
-    summary: "A Redis-style server built to understand concurrency from the inside.",
+    summary: "A Redis style server built to understand concurrency from the inside.",
     description:
-      "Serves concurrent TCP clients with expiration, LRU eviction, append-only persistence, and six familiar Redis commands.",
+      "Serves concurrent TCP clients with expiration, LRU eviction, append only persistence, and six familiar Redis commands.",
     why:
       "I built MiniRedis because reading about caches and locks is different from designing one, breaking it under load, and measuring the result.",
     stack: "C++20 · TCP/IP · multithreading · CMake",
     links: [],
-    metric: { value: "52K+", label: "operations per second" }
+    metric: { value: "52K+", label: "operations per second" },
+    status: "Coming soon"
   }
 ];
 
@@ -261,8 +273,8 @@ const umichCourses: Course[] = [
   { code: "EECS 485", title: "Web Systems" },
   { code: "EECS 491", title: "Introduction to Distributed Systems" },
   { code: "EECS 493", title: "User Interface Development" },
-  { code: "EECS 497", title: "Human-Centered Software Design and Development" },
-  { code: "EECS 498-016", title: "Applied Agentic Software Engineering (Special Topics)" },
+  { code: "EECS 497", title: "Human Centered Software Design and Development" },
+  { code: "EECS 498 016", title: "Applied Agentic Software Engineering (Special Topics)" },
   { code: "ROB 102", title: "Introduction to AI Programming" },
   { code: "MATH 214", title: "Applied Linear Algebra" },
   { code: "MATH 215", title: "Multivariable and Vector Calculus" }
@@ -279,7 +291,7 @@ type AboutTile = {
 const aboutTiles: AboutTile[] = [
   {
     file: "pizza.jpg",
-    caption: "Always chasing the next great meal — this one's L'Industrie Pizzeria in NYC."
+    caption: "Always chasing the next great meal. This one's L'Industrie Pizzeria in NYC."
   },
   {
     file: "friends-1.jpg",
@@ -291,11 +303,11 @@ const aboutTiles: AboutTile[] = [
   },
   {
     file: "sunset-1.jpg",
-    caption: "I love traveling — these were sunsets in LA, California."
+    caption: "I love traveling. These were sunsets in LA, California."
   },
   {
     file: "sunset-2.jpg",
-    caption: "I love traveling — these were sunsets in LA, California."
+    caption: "I love traveling. These were sunsets in LA, California."
   }
 ];
 
@@ -338,18 +350,27 @@ export default function Home() {
         id="intro"
         className="flex min-h-screen items-center justify-center bg-paper px-6 dark:bg-ink"
       >
-        <div className="flex max-w-xl flex-col gap-4 text-sm">
-          <h1 className="font-serif text-4xl font-bold">Supreeth Chittaluri</h1>
-          <p className="opacity-70">
-            Studying Computer Science at the University of Michigan.
+        <div className="flex w-full max-w-2xl flex-col gap-4 text-sm">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-accent">
+            Hello, I am
           </p>
-          <p className="opacity-70">
-            <Fill>a one-line personal sentence — what you like to do</Fill>
+          <h1 className="font-serif text-4xl font-bold sm:text-5xl">Supreeth Chittaluri.</h1>
+          <p className="text-base opacity-70">
+            I study Computer Science at the University of Michigan.
           </p>
-          <div className="flex flex-wrap gap-3 pt-2">
+          <Typewriter text="I build software that turns complex systems and noisy data into tools people can actually use." />
+          <div className="flex flex-wrap gap-3 pt-3">
             <ContactChip href={`mailto:${email}`} icon={<MailIcon />} label={email} external={false} />
             <ContactChip href={linkedInUrl} icon={<LinkedInIcon />} label="LinkedIn" />
             <ContactChip href={githubUrl} icon={<GitHubIcon />} label="GitHub" />
+            <span
+              aria-disabled="true"
+              title="A current résumé will be added soon"
+              className="inline-flex cursor-not-allowed items-center gap-2 rounded-full border border-black/10 px-4 py-2 text-sm opacity-40 dark:border-paper/10"
+            >
+              <DocumentIcon />
+              <span>Résumé coming soon</span>
+            </span>
           </div>
         </div>
       </section>
@@ -371,7 +392,7 @@ export default function Home() {
                 <Fill>location</Fill>
               </p>
               <p className="text-base leading-relaxed opacity-70">
-                AI &amp; Operational Analytics — <Fill>one-line description of the work</Fill>
+                AI &amp; Operational Analytics. <Fill>one line description of the work</Fill>
               </p>
             </div>
 
@@ -389,7 +410,7 @@ export default function Home() {
                 <Fill>location</Fill>
               </p>
               <p className="text-base leading-relaxed opacity-70">
-                <Fill>one-line description</Fill>
+                <Fill>one line description</Fill>
               </p>
             </div>
 
@@ -407,7 +428,7 @@ export default function Home() {
                 <Fill>location</Fill>
               </p>
               <p className="text-base leading-relaxed opacity-70">
-                <Fill>one-line description</Fill>
+                <Fill>one line description</Fill>
               </p>
             </div>
           </div>
@@ -476,6 +497,11 @@ export default function Home() {
                             {l.label !== "GitHub" ? <ArrowOutIcon /> : null}
                           </a>
                         ))}
+                        {p.links.length === 0 && p.status ? (
+                          <span className="project-link project-link-disabled" aria-disabled="true">
+                            {p.status}
+                          </span>
+                        ) : null}
                       </div>
                     </div>
                   </div>
@@ -528,7 +554,7 @@ export default function Home() {
             <ul className="columns-1 gap-x-8 text-sm opacity-70 sm:columns-2">
               {umichCourses.map((c) => (
                 <li key={c.code} className="mb-2 break-inside-avoid">
-                  {c.code} — {c.title}
+                  {c.code} · {c.title}
                 </li>
               ))}
             </ul>

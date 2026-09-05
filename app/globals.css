@@ -36,6 +36,28 @@ html.dark ::selection {
   color: var(--ink);
 }
 
+.typewriter-cursor {
+  display: inline-block;
+  width: 0.08em;
+  height: 1.05em;
+  margin-left: 0.12em;
+  vertical-align: -0.12em;
+  background: var(--accent);
+  animation: cursor-blink 800ms step-end infinite;
+}
+
+@keyframes cursor-blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+
+  46%,
+  100% {
+    opacity: 0;
+  }
+}
+
 /* ---------------------------------------------------------------------------
    Nav links — underline sweep from right to left, tinted with the accent.
    --------------------------------------------------------------------------- */
@@ -248,6 +270,11 @@ html.dark ::selection {
   background: color-mix(in srgb, var(--accent) 8%, transparent);
 }
 
+.project-link-disabled {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
 .mini-redis-benchmark {
   display: flex;
   flex-direction: column;
@@ -374,5 +401,10 @@ html.dark ::selection {
   .project-panel,
   .project-toggle {
     transition: none;
+  }
+
+  .typewriter-cursor {
+    animation: none;
+    opacity: 0;
   }
 }
