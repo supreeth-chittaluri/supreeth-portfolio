@@ -1,3 +1,3 @@
 # Supreeth Chittaluri — Portfolio
 
-https://supreeth-chittaluri.github.io/supreeth-portfolio/
+https://supreeth-portfolio-drab.vercel.app
