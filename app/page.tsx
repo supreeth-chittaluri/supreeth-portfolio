@@ -315,7 +315,18 @@ const aboutStories: AboutStory[] = [
         alt: "A table full of pizza slices at L’Industrie Pizzeria in New York City"
       }
     ],
-    caption: "Chasing the next great meal at L’Industrie Pizzeria in NYC",
+    caption: "Always chasing the next great meal, this one’s at L’Industrie Pizzeria in NYC",
+    layout: "portrait"
+  },
+  {
+    id: "basketball",
+    photos: [
+      {
+        file: "basketball.webp",
+        alt: "An outdoor basketball hoop under the evening sky"
+      }
+    ],
+    caption: "Play basketball often",
     layout: "portrait"
   },
   {
@@ -330,19 +341,8 @@ const aboutStories: AboutStory[] = [
         alt: "A sunset over the hills and cityscape of Los Angeles"
       }
     ],
-    caption: "Traveling for sunsets like these in LA, California",
+    caption: "Love traveling, these are some sunsets from LA, California",
     layout: "travel"
-  },
-  {
-    id: "basketball",
-    photos: [
-      {
-        file: "basketball.webp",
-        alt: "An outdoor basketball hoop under the evening sky"
-      }
-    ],
-    caption: "Basketball is the game I always come back to",
-    layout: "portrait"
   },
   {
     id: "big-house",
@@ -352,7 +352,7 @@ const aboutStories: AboutStory[] = [
         alt: "Michigan football from the front row at the Big House"
       }
     ],
-    caption: "Catching Michigan football from the front row at the Big House",
+    caption: "Love catching games at the Big House",
     layout: "landscape"
   },
   {
@@ -363,7 +363,7 @@ const aboutStories: AboutStory[] = [
         alt: "A concert arena filled with orange lights and stage effects"
       }
     ],
-    caption: "A huge fan of live music and the energy of a great concert",
+    caption: "Big fan of live music",
     layout: "portrait"
   }
 ];
@@ -487,7 +487,7 @@ export default function Home() {
 
       {/* Projects */}
       <section id="projects" className="bg-paper py-24 dark:bg-ink">
-        <SectionHeading n="02" eyebrow="Selected work" title="Projects" />
+        <SectionHeading n="02" eyebrow="Passion work" title="Projects" />
         <div className="mx-auto max-w-[1100px] px-4 sm:px-6">
           <div className="project-list">
             {projects.map((p, index) => (
@@ -564,7 +564,7 @@ export default function Home() {
 
       {/* Skills */}
       <section id="skills" className="bg-paper py-24 dark:bg-ink">
-        <SectionHeading n="03" eyebrow="Toolkit" title="Main Skills" />
+        <SectionHeading n="03" eyebrow="Toolkit" title="Skills" />
         <div className="mx-auto flex max-w-[1000px] flex-wrap justify-center gap-4 px-4">
           {skills.map((s) => (
             <div
