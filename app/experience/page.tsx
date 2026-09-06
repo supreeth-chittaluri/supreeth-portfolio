@@ -16,7 +16,10 @@ export default function ExperiencePage() {
           <article className="experience-card" key={experience.company}>
             <div className="experience-card-top">
               <span className="row-number">{String(index + 1).padStart(2, "0")}</span>
-              <span className="experience-company">{experience.company}</span>
+              <span className="experience-card-identity">
+                <strong>{experience.company}</strong>
+                <span>{experience.location}</span>
+              </span>
             </div>
             <div className="experience-card-main">
               {experience.period ? <p className="experience-period">{experience.period}</p> : null}

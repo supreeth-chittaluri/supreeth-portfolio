@@ -432,8 +432,16 @@ a {
 }
 
 .education-degree {
-  margin: 0.7rem 0 0;
+  margin: 0;
   color: var(--muted);
+}
+
+.education-degree-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 0.8rem;
 }
 
 .education-standing {
@@ -598,15 +606,29 @@ a {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid rgb(245 241 232 / 10%);
 }
 
-.experience-company {
-  color: var(--accent-soft);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.12em;
+.experience-card-identity {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.2rem;
   text-align: right;
-  text-transform: uppercase;
+}
+
+.experience-card-identity strong {
+  color: var(--paper);
+  font-family: "Libre Baskerville", Georgia, serif;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.experience-card-identity span {
+  color: var(--accent-soft);
+  font-size: 0.78rem;
+  line-height: 1.45;
 }
 
 .experience-card-main {
@@ -1008,6 +1030,51 @@ a {
   padding-bottom: 8rem;
 }
 
+.about-profile {
+  display: grid;
+  grid-template-columns: minmax(16rem, 0.72fr) minmax(0, 1.28fr);
+  align-items: center;
+  gap: clamp(2rem, 6vw, 5.5rem);
+  padding-bottom: 6rem;
+}
+
+.about-headshot-frame {
+  overflow: hidden;
+  border: 1px solid var(--rule);
+  border-radius: 1.6rem;
+  background: var(--surface);
+  box-shadow: 0 24px 70px rgb(0 0 0 / 22%);
+}
+
+.about-headshot {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.about-introduction {
+  max-width: 680px;
+  margin: 1rem 0 0;
+  font-family: "Libre Baskerville", Georgia, serif;
+  font-size: clamp(1.25rem, 2.6vw, 2rem);
+  line-height: 1.65;
+}
+
+.about-focus {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1.8rem;
+}
+
+.about-focus span {
+  padding: 0.48rem 0.75rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
 .about-education {
   padding-bottom: 7rem;
 }
@@ -1027,13 +1094,13 @@ a {
 .about-story {
   display: inline-block;
   width: 100%;
-  margin: 0 0 clamp(2rem, 4vw, 3.25rem);
+  margin: 0 0 1rem;
   break-inside: avoid;
 }
 
 .about-photos {
   display: grid;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .about-photos-2 {
@@ -1050,7 +1117,7 @@ a {
 }
 
 .about-story figcaption {
-  padding: 0.9rem 0.35rem 0;
+  padding: 1rem 0.35rem 0;
   color: var(--muted);
   font-size: 0.88rem;
   line-height: 1.6;
@@ -1112,6 +1179,11 @@ a {
 
   .about-collage {
     columns: 2;
+  }
+
+  .about-profile {
+    grid-template-columns: minmax(14rem, 0.8fr) minmax(0, 1.2fr);
+    gap: 2.5rem;
   }
 }
 
@@ -1201,6 +1273,15 @@ a {
 
   .about-collage {
     columns: 1;
+  }
+
+  .about-profile {
+    grid-template-columns: 1fr;
+  }
+
+  .about-headshot-frame {
+    width: min(100%, 28rem);
+    margin-inline: auto;
   }
 
   .site-footer {

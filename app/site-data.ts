@@ -40,6 +40,7 @@ export const experiences = [
   {
     role: "AI Product and Engineering Intern",
     company: "OneStream Software",
+    location: "Birmingham, Michigan",
     period: "Summer 2026",
     summary: "Worked within AI and Operational Analytics on AI focused engineering and production software, contributing across product thinking, implementation, and developer workflows inside the Xperiflow platform.",
     details: ["AI and Operational Analytics", "Production software", "Cross functional product work"]
@@ -47,12 +48,14 @@ export const experiences = [
   {
     role: "Software Engineering Intern",
     company: "First Class Rentals",
+    location: "Chicago, Illinois",
     summary: "Built pricing and operations tools for more than 20 rental units, combining booking data, demand forecasting, reporting automation, and practical decisions that helped increase revenue by 15 percent and occupancy from 90 percent to 95 percent.",
     details: ["Python and SQL", "More than 100 booking records", "5 point occupancy increase"]
   },
   {
     role: "Data Analytics Intern",
     company: "HCL Global Systems",
+    location: "Farmington Hills, Michigan",
     summary: "Automated reporting across more than 450 employee records and built operational dashboards that improved compliance tracking by 30 percent while saving more than 10 hours of manual work each week.",
     details: ["Python and Pandas", "More than 450 records", "30 percent compliance improvement"]
   }
