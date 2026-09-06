@@ -20,9 +20,14 @@ export default function AboutPage() {
         </div>
         <div className="about-profile-copy">
           <p className="eyebrow">Supreeth Chittaluri</p>
-          <p className="about-introduction">
-            I am a junior at the University of Michigan studying Computer Science. I enjoy building useful software, from routing systems to tools that make complex data easier to act on. I am especially interested in software engineering and applied AI.
-          </p>
+          <div className="about-introduction">
+            <p>
+              I am a junior at the University of Michigan studying Computer Science, with a focus on software engineering and applied AI. I am drawn to problems where algorithms, data, and product decisions all matter, especially when the result can make something complicated easier to understand or use.
+            </p>
+            <p>
+              That interest shapes the work I choose. I built a2transit to connect Ann Arbor’s two bus systems in one route search, Pulse to separate meaningful market activity from background noise, and Undrift to make skill growth visible through real development history. Alongside my experience building AI and production software at OneStream, these projects have taught me to work across the full product, measure whether an idea actually works, and stay with difficult technical problems until I understand them.
+            </p>
+          </div>
         </div>
       </section>
       <section className="content-shell about-education" aria-labelledby="education-heading">
