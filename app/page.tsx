@@ -616,7 +616,7 @@ export default function Home() {
       <section id="about" className="bg-paper py-24 dark:bg-ink">
         <SectionHeading n="05" eyebrow="Off the clock" title="About Me" />
         <div className="about-collage mx-auto max-w-[1100px] px-4 sm:px-6">
-          {aboutStories.map((story, storyIndex) => (
+          {aboutStories.map((story) => (
             <figure
               key={story.id}
               className={`about-story about-story-${story.layout}`}
@@ -635,7 +635,6 @@ export default function Home() {
                 ))}
               </div>
               <figcaption className="about-caption">
-                <span>{String(storyIndex + 1).padStart(2, "0")}</span>
                 <p>{story.caption}</p>
               </figcaption>
             </figure>
