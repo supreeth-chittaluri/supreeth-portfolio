@@ -1,5 +1,3 @@
-import { existsSync } from "node:fs";
-import path from "node:path";
 import type { ReactNode } from "react";
 import TypedIntro from "./typewriter";
 
@@ -280,38 +278,93 @@ const umichCourses: Course[] = [
   { code: "MATH 215", title: "Multivariable and Vector Calculus" }
 ];
 
-type AboutTile = {
-  file: string; // expected path under /public/about — drop the photo in with this filename
-  caption: string;
+type AboutPhoto = {
+  file: string;
+  alt: string;
+  position?: string;
 };
 
-/* Personal "About Me" tiles, plain grid — one photo per tile, one caption
-   under each. Drop the matching photo into public/about/<file> and it will
-   appear automatically. */
-const aboutTiles: AboutTile[] = [
+type AboutStory = {
+  id: string;
+  photos: AboutPhoto[];
+  caption: string;
+  layout: "friends" | "portrait" | "travel" | "landscape";
+};
+
+const aboutStories: AboutStory[] = [
   {
-    file: "friends-1.jpg",
-    caption: "Always a good time with my friends"
+    id: "friends",
+    photos: [
+      {
+        file: "friends-1.webp",
+        alt: "Supreeth spending a sunny day at an amusement park with friends"
+      },
+      {
+        file: "friends-2.webp",
+        alt: "Supreeth and friends together in the city at night"
+      }
+    ],
+    caption: "Always love hanging out with my friends",
+    layout: "friends"
   },
   {
-    file: "friends-2.jpg",
-    caption: "Some of my favorite memories are with this group"
+    id: "pizza",
+    photos: [
+      {
+        file: "pizza.webp",
+        alt: "A table full of pizza slices at L’Industrie Pizzeria in New York City"
+      }
+    ],
+    caption: "Chasing the next great meal at L’Industrie Pizzeria in NYC",
+    layout: "portrait"
   },
   {
-    file: "pizza.jpg",
-    caption: "Chasing the next great meal at L'Industrie Pizzeria in NYC"
+    id: "travel",
+    photos: [
+      {
+        file: "la-sunset-1.webp",
+        alt: "An orange sunset over the Pacific Ocean in Los Angeles"
+      },
+      {
+        file: "la-sunset-2.webp",
+        alt: "A sunset over the hills and cityscape of Los Angeles"
+      }
+    ],
+    caption: "Traveling for sunsets like these in LA, California",
+    layout: "travel"
   },
   {
-    file: "sunsets.jpg",
-    caption: "Traveling for views like these sunsets in LA, California"
+    id: "basketball",
+    photos: [
+      {
+        file: "basketball.webp",
+        alt: "An outdoor basketball hoop under the evening sky"
+      }
+    ],
+    caption: "Basketball is the game I always come back to",
+    layout: "portrait"
   },
   {
-    file: "basketball.jpg",
-    caption: "Basketball has always been my favorite sport to watch and play"
+    id: "big-house",
+    photos: [
+      {
+        file: "big-house.webp",
+        alt: "Michigan football from the front row at the Big House"
+      }
+    ],
+    caption: "Catching Michigan football from the front row at the Big House",
+    layout: "landscape"
   },
   {
-    file: "big-house.jpg",
-    caption: "Catching Michigan football games at the Big House"
+    id: "concert",
+    photos: [
+      {
+        file: "concert.webp",
+        alt: "A concert arena filled with orange lights and stage effects"
+      }
+    ],
+    caption: "A huge fan of live music and the energy of a great concert",
+    layout: "portrait"
   }
 ];
 
@@ -562,27 +615,31 @@ export default function Home() {
       {/* About Me */}
       <section id="about" className="bg-paper py-24 dark:bg-ink">
         <SectionHeading n="05" eyebrow="Off the clock" title="About Me" />
-        <div className="mx-auto grid max-w-content-lg grid-cols-2 gap-x-6 gap-y-10 px-4 sm:grid-cols-3">
-          {aboutTiles.map((tile) => {
-            const hasPhoto = existsSync(path.join(process.cwd(), "public", "about", tile.file));
-            return (
-              <div key={tile.file} className="text-center">
-                {hasPhoto ? (
+        <div className="about-collage mx-auto max-w-[1100px] px-4 sm:px-6">
+          {aboutStories.map((story, storyIndex) => (
+            <figure
+              key={story.id}
+              className={`about-story about-story-${story.layout}`}
+            >
+              <div className={`about-photos about-photos-${story.photos.length}`}>
+                {story.photos.map((photo) => (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
-                    src={`${basePath}/about/${tile.file}`}
-                    alt={tile.caption}
-                    className="aspect-[4/5] w-full rounded-lg border-4 border-paper object-cover shadow-lg dark:border-paper/90"
+                    key={photo.file}
+                    src={`${basePath}/about/${photo.file}`}
+                    alt={photo.alt}
+                    loading="lazy"
+                    className="about-photo"
+                    style={photo.position ? { objectPosition: photo.position } : undefined}
                   />
-                ) : (
-                  <div className="grid aspect-[4/5] place-items-center overflow-hidden rounded-lg border-4 border-dashed border-black/20 p-3 text-center dark:border-paper/20">
-                    <Fill>drop photo in as public/about/{tile.file}</Fill>
-                  </div>
-                )}
-                <p className="mt-4 text-sm opacity-70">{tile.caption}</p>
+                ))}
               </div>
-            );
-          })}
+              <figcaption className="about-caption">
+                <span>{String(storyIndex + 1).padStart(2, "0")}</span>
+                <p>{story.caption}</p>
+              </figcaption>
+            </figure>
+          ))}
         </div>
       </section>
 
