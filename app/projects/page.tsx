@@ -26,7 +26,7 @@ function ProjectContent({ project, index }: { project: (typeof projects)[number]
 export default function ProjectsPage() {
   return (
     <PageShell>
-      <PageIntro eyebrow="02 · Passion work" title="Projects" description="Software built around problems I wanted to understand deeply enough to solve." />
+      <PageIntro eyebrow="02 · Passion work" title="Projects" />
       <section className="content-shell project-directory" aria-label="Project directory">
         {projects.map((project, index) => project.published ? (
           <Link className="project-card" href={sitePath(`/projects/${project.slug}/`)} key={project.slug}>

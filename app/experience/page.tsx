@@ -10,21 +10,21 @@ export const metadata: Metadata = {
 export default function ExperiencePage() {
   return (
     <PageShell>
-      <PageIntro eyebrow="01 · Experience" title="Where I have worked" description="The teams, systems, and measurable problems that have shaped how I build software." />
-      <section className="content-shell experience-list" aria-label="Professional experience">
+      <PageIntro eyebrow="01 · Timeline" title="Experiences" />
+      <section className="content-shell experience-grid" aria-label="Professional experience">
         {experiences.map((experience, index) => (
-          <article className="experience-row" key={experience.company}>
-            <p className="row-number">{String(index + 1).padStart(2, "0")}</p>
-            <div className="experience-heading">
-              <p className="eyebrow">{experience.company}</p>
-              <h2>{experience.role}</h2>
-              {experience.period ? <p className="experience-period">{experience.period}</p> : null}
+          <article className="experience-card" key={experience.company}>
+            <div className="experience-card-top">
+              <span className="row-number">{String(index + 1).padStart(2, "0")}</span>
+              <span className="experience-company">{experience.company}</span>
             </div>
-            <div className="experience-body">
+            <div className="experience-card-main">
+              {experience.period ? <p className="experience-period">{experience.period}</p> : null}
+              <h2>{experience.role}</h2>
               <p>{experience.summary}</p>
-              <div className="evidence-row">
-                {experience.details.map((detail) => <span key={detail}>{detail}</span>)}
-              </div>
+            </div>
+            <div className="evidence-row">
+              {experience.details.map((detail) => <span key={detail}>{detail}</span>)}
             </div>
           </article>
         ))}

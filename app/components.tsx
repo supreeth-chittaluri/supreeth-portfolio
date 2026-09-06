@@ -103,12 +103,12 @@ export function SectionHeading({ number, eyebrow, title, id }: { number: string;
   );
 }
 
-export function PageIntro({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
+export function PageIntro({ eyebrow, title, description }: { eyebrow: string; title: string; description?: string }) {
   return (
     <section className="page-intro">
       <p className="eyebrow">{eyebrow}</p>
       <h1>{title}</h1>
-      <p>{description}</p>
+      {description ? <p>{description}</p> : null}
     </section>
   );
 }

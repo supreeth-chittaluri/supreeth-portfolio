@@ -14,7 +14,7 @@ export default function BlogPage() {
 
   return (
     <PageShell>
-      <PageIntro eyebrow="04 · Blog" title="Engineering notes" description="Design decisions, debugging stories, and lessons from each project." />
+      <PageIntro eyebrow="04 · Engineering notes" title="Blog" />
       <section className="content-shell blog-directory" aria-label="Blog posts">
         {posts.map((post, index) => (
           <Link className="blog-row" href={sitePath(`/blog/${post.slug}/`)} key={post.slug}>
