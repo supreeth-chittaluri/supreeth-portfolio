@@ -6,15 +6,15 @@ export const navItems = [
   { label: "Home", href: "/" },
   { label: "Experience", href: "/experience/" },
   { label: "Projects", href: "/projects/" },
-  { label: "Blog", href: "/blog/" },
   { label: "Stack", href: "/stack/" },
+  { label: "Blog", href: "/blog/" },
   { label: "About", href: "/about/" }
 ];
 
 export const snapshots = [
-  { label: "Studying", value: "Computer Science at the University of Michigan" },
-  { label: "Standing", value: "Junior in the College of Engineering" },
-  { label: "Recently", value: "AI Product and Engineering Intern at OneStream Software" }
+  { label: "University of Michigan", value: "Computer Science · Junior" },
+  { label: "OneStream Software", value: "AI Product and Engineering Intern" },
+  { label: "Ann Arbor, Michigan", value: "Based in" }
 ];
 
 export const education = [
@@ -85,7 +85,7 @@ export const projects: Project[] = [
     category: "Transit routing",
     summary: "One trip planner for Ann Arbor's two bus networks",
     description: "Combines TheRide and University of Michigan bus schedules, walking connections, service calendars, live vehicles, and delays into one door to door route search.",
-    why: "As a Michigan student, I wanted the overlapping systems I use around campus to behave like one connected network instead of two separate maps.",
+    why: "Ann Arbor riders move between two overlapping bus systems that expose separate maps, schedules, and service updates. For a Michigan student traveling between campus and the city, one trip can require several disconnected searches.",
     image: "/projects/a2transit.webp",
     imageAlt: "a2transit planning a route across a live map of Ann Arbor",
     stack: ["Python", "FastAPI", "PostgreSQL", "PostGIS", "Redis", "React", "MapLibre", "GTFS"],
@@ -93,7 +93,7 @@ export const projects: Project[] = [
     github: "https://github.com/supreeth-chittaluri/a2transit",
     published: true,
     challenge: "Adding walking connections exposed two subtle routing errors. One itinerary arrived at the correct time but reconstructed a destination two miles away. Another produced an impossible walk whose existence depended on iteration order.",
-    solution: "I separated ride, walk, and ready parent state, then changed walking relaxation to read from a stable snapshot of vehicle arrivals. Both routing engines now consume the same walking graph and are compared against each other on real transit data.",
+    solution: "The final design separates ride, walk, and ready parent state, then runs walking relaxation from a stable snapshot of vehicle arrivals. Both routing engines consume the same walking graph and are compared against each other on real transit data.",
     verification: "The router uses 8,308 walking links, including 1,456 connections between agencies. A timetable takes about 330 milliseconds to build, while a cached query completes in about 4 milliseconds.",
     evidence: ["Two independent routing engines", "8,308 walking links", "About 4 millisecond cached queries", "Real service calendar testing"]
   },
@@ -103,7 +103,7 @@ export const projects: Project[] = [
     category: "Market intelligence",
     summary: "Finds stock discussion spikes that are unusual for each ticker",
     description: "Collects market conversations, identifies ticker mentions, scores sentiment, and compares each symbol with its own rolling baseline before surfacing a spike.",
-    why: "I built Pulse to separate meaningful changes from the constant noise around popular stocks and make that signal available without charging the public.",
+    why: "Popular stocks generate constant discussion, so raw mention counts confuse background noise with meaningful movement. Pulse measures each symbol against its own history and keeps the resulting signal available without charging the public.",
     image: "/projects/pulse.webp",
     imageAlt: "Pulse dashboard showing market sentiment and mention volume",
     stack: ["TypeScript", "Node.js", "Express", "PostgreSQL", "React", "Gemini", "Server Sent Events"],
@@ -111,7 +111,7 @@ export const projects: Project[] = [
     github: "https://github.com/supreeth-chittaluri/pulse",
     published: true,
     challenge: "The ingestion queue survived restarts, but useful signals still depended on someone pressing a button. Old posts could accumulate safely while the public product quietly became stale.",
-    solution: "I added free local ticker filtering before Gemini, persisted that decision, scheduled scoring every 30 minutes, and coordinated manual and automatic work through one database lock. Every model call, including retries, must reserve space under the same daily request budget.",
+    solution: "The final pipeline performs free local ticker filtering before Gemini, persists that decision, schedules scoring every 30 minutes, and coordinates manual and automatic work through one database lock. Every model call, including retries, reserves space under the same daily request budget.",
     verification: "Pulse filters about 45 percent of ingested posts before the model, operates at no ongoing cost, and records source publication time so an older queued post never appears to be fresh news.",
     evidence: ["262 passing tests", "45 percent filtered before Gemini", "400 request daily ceiling", "No ongoing operating cost"]
   },
@@ -121,7 +121,7 @@ export const projects: Project[] = [
     category: "Developer analytics",
     summary: "Turns coding history into an evidence backed view of skill freshness",
     description: "Classifies public GitHub activity and translates it into explainable freshness, depth, momentum, and skill decay forecasts.",
-    why: "I built Undrift after realizing a résumé says what I have learned, but not what I have practiced lately or what I should revisit next.",
+    why: "A résumé records what someone has learned, but it cannot show what has been practiced recently or which skills may deserve attention next. Undrift turns public development history into a more current and explainable view.",
     image: "/projects/undrift.webp",
     imageAlt: "Undrift dashboard showing skill freshness, depth, momentum, and forecasts",
     stack: ["Python", "FastAPI", "PostgreSQL", "React", "GitHub API", "Claude"],
@@ -129,7 +129,7 @@ export const projects: Project[] = [
     github: "https://github.com/supreeth-chittaluri/undrift",
     published: true,
     challenge: "A single freshness score treated a deeply established skill that had gone quiet like a technology touched twice last week. The same number could demand opposite advice.",
-    solution: "I separated the model into freshness, depth, and momentum. Thin evidence produces no momentum claim, and the forecast solves directly for when a skill will cross a freshness threshold.",
+    solution: "The scoring model separates freshness, depth, and momentum. Thin evidence produces no momentum claim, and the forecast solves directly for when a skill will cross a freshness threshold.",
     verification: "The evidence view links every score back to the commits that produced it. Batching later reduced classification cost for 302 commits from $1.70 to $0.09 while preserving a deterministic fallback.",
     evidence: ["Three independent scoring axes", "Evidence linked to commits", "302 commit classification run", "Classification cost reduced to $0.09"]
   },

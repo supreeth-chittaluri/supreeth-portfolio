@@ -301,7 +301,8 @@ a {
 .content-shell,
 .project-detail,
 .article-shell,
-.about-collage {
+.about-collage,
+.profile-strip {
   width: min(100% - 2rem, 1100px);
   margin-inline: auto;
 }
@@ -331,6 +332,10 @@ a {
   font-size: clamp(2rem, 5vw, 3.25rem);
 }
 
+.profile-strip {
+  padding: 0 0 2rem;
+}
+
 .snapshot-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -347,11 +352,18 @@ a {
   border-left: 1px solid var(--rule);
 }
 
-.snapshot-value {
-  margin: 1rem 0 0;
+.snapshot-label {
+  margin: 0;
   font-family: "Libre Baskerville", Georgia, serif;
-  font-size: 1.3rem;
-  line-height: 1.5;
+  font-size: 1.1rem;
+  line-height: 1.45;
+}
+
+.snapshot-value {
+  margin: 0.6rem 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.6;
 }
 
 .education-card {
@@ -477,6 +489,14 @@ a {
   border-top: 1px solid var(--rule);
 }
 
+.project-directory {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 0;
+}
+
 .experience-row {
   display: grid;
   grid-template-columns: 3rem minmax(15rem, 0.85fr) minmax(20rem, 1.15fr);
@@ -528,54 +548,77 @@ a {
   font-size: 0.74rem;
 }
 
-.project-list-row {
-  display: grid;
-  grid-template-columns: 3rem minmax(13rem, 0.7fr) minmax(18rem, 1fr) 7rem;
-  align-items: center;
-  gap: 1.5rem;
-  min-height: 8.5rem;
-  padding: 1.5rem 0;
-  border-bottom: 1px solid var(--rule);
+.project-card {
+  display: flex;
+  min-height: 20rem;
+  flex-direction: column;
+  padding: clamp(1.5rem, 3vw, 2.25rem);
+  border: 1px solid var(--rule);
+  border-radius: 1.6rem;
+  background: var(--surface);
   text-decoration: none;
-  transition: color 180ms ease, padding 180ms ease;
+  transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
 }
 
-.project-list-row:hover {
-  padding-right: 0.4rem;
-  padding-left: 0.4rem;
+.project-card:hover {
+  border-color: rgb(217 164 65 / 58%);
+  background: rgb(217 164 65 / 7%);
+  transform: translateY(-3px);
+}
+
+.project-card-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.project-card-title {
+  margin-top: 3rem;
+  font-family: "Libre Baskerville", Georgia, serif;
+  font-size: clamp(1.8rem, 4vw, 2.75rem);
+  line-height: 1.25;
+  transition: color 180ms ease;
+}
+
+.project-card:hover .project-card-title {
   color: var(--accent-soft);
 }
 
-.project-list-heading {
-  display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
-}
-
-.project-list-heading strong {
-  font-family: "Libre Baskerville", Georgia, serif;
-  font-size: clamp(1.5rem, 3vw, 2.25rem);
-}
-
-.project-list-summary {
+.project-card-summary {
+  margin-top: 1rem;
   color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.75;
 }
 
-.project-list-action,
-.blog-row-action {
-  justify-self: end;
+.project-card-stack {
+  margin-top: 1.4rem;
+  color: rgb(245 241 232 / 48%);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  line-height: 1.7;
+  text-transform: uppercase;
+}
+
+.project-card-action {
+  margin-top: auto;
+  padding-top: 2rem;
   color: var(--accent-soft);
   font-size: 0.78rem;
 }
 
-.project-list-row-disabled {
+.project-card-disabled {
   color: rgb(245 241 232 / 55%);
   cursor: default;
 }
 
-.project-list-row-disabled:hover {
-  padding-inline: 0;
+.project-card-disabled:hover {
   color: rgb(245 241 232 / 55%);
+  border-color: var(--rule);
+  background: var(--surface);
+  transform: none;
 }
 
 .project-detail,
@@ -731,6 +774,12 @@ a {
   color: var(--accent-soft);
 }
 
+.blog-row-action {
+  justify-self: end;
+  color: var(--accent-soft);
+  font-size: 0.78rem;
+}
+
 .article-shell {
   width: min(100% - 2rem, 900px);
 }
@@ -793,26 +842,25 @@ a {
 
 .skill-logo {
   display: flex;
-  width: 5.5rem;
+  width: 6rem;
   flex-direction: column;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.5rem;
   margin: 0;
 }
 
 .skill-logo img {
-  width: 4.3rem;
-  height: 4.3rem;
-  padding: 0.85rem;
-  border: 1px solid var(--rule);
+  width: 6rem;
+  height: 6rem;
+  padding: 1rem;
+  border: 0;
   border-radius: 1rem;
   background: rgb(245 241 232 / 6%);
   object-fit: contain;
-  transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+  transition: background 160ms ease, transform 160ms ease;
 }
 
 .skill-logo:hover img {
-  border-color: rgb(217 164 65 / 55%);
   background: rgb(217 164 65 / 9%);
   transform: translateY(-2px);
 }
@@ -832,22 +880,17 @@ a {
 }
 
 .about-collage {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 1.5rem;
+  columns: 3;
+  column-gap: clamp(1rem, 2.2vw, 1.75rem);
   padding-bottom: 8rem;
 }
 
 .about-story {
-  margin: 0;
+  display: inline-block;
+  width: 100%;
+  margin: 0 0 clamp(2rem, 4vw, 3.25rem);
+  break-inside: avoid;
 }
-
-.about-story-friends { grid-column: 1 / span 2; grid-row: 1; }
-.about-story-pizza { grid-column: 3; grid-row: 1; }
-.about-story-basketball { grid-column: 1; grid-row: 2; }
-.about-story-big-house { grid-column: 2 / span 2; grid-row: 2; }
-.about-story-travel { grid-column: 1 / span 2; grid-row: 3; }
-.about-story-concert { grid-column: 3; grid-row: 3; }
 
 .about-photos {
   display: grid;
@@ -855,8 +898,7 @@ a {
 }
 
 .about-photos-2 {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  align-items: start;
+  grid-template-columns: minmax(0, 1fr);
 }
 
 .about-photo {
@@ -912,19 +954,12 @@ a {
     border-left: 0;
   }
 
-  .experience-row,
-  .project-list-row {
+  .experience-row {
     grid-template-columns: 2.5rem minmax(0, 1fr);
   }
 
-  .experience-body,
-  .project-list-summary,
-  .project-list-action {
+  .experience-body {
     grid-column: 2;
-  }
-
-  .project-list-action {
-    justify-self: start;
   }
 
   .blog-row {
@@ -942,6 +977,10 @@ a {
 
   .stack-text {
     grid-column: 1;
+  }
+
+  .about-collage {
+    columns: 2;
   }
 }
 
@@ -984,10 +1023,17 @@ a {
   }
 
   .experience-row,
-  .project-list-row,
   .blog-row {
     gap: 0.9rem;
     padding: 2rem 0;
+  }
+
+  .project-directory {
+    grid-template-columns: 1fr;
+  }
+
+  .project-card {
+    min-height: 18rem;
   }
 
   .project-detail,
@@ -1006,25 +1052,8 @@ a {
   }
 
   .about-collage {
-    grid-template-columns: 1fr;
+    columns: 1;
   }
-
-  .about-story-friends,
-  .about-story-pizza,
-  .about-story-basketball,
-  .about-story-big-house,
-  .about-story-travel,
-  .about-story-concert {
-    grid-column: 1;
-    grid-row: auto;
-  }
-
-  .about-story-friends { order: 1; }
-  .about-story-pizza { order: 2; }
-  .about-story-basketball { order: 3; }
-  .about-story-big-house { order: 4; }
-  .about-story-travel { order: 5; }
-  .about-story-concert { order: 6; }
 
   .site-footer {
     align-items: flex-start;

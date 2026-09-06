@@ -11,13 +11,14 @@ export const metadata: Metadata = {
 function ProjectContent({ project, index }: { project: (typeof projects)[number]; index: number }) {
   return (
     <>
-      <span className="row-number">{String(index + 1).padStart(2, "0")}</span>
-      <span className="project-list-heading">
+      <span className="project-card-topline">
+        <span className="row-number">{String(index + 1).padStart(2, "0")}</span>
         <span className="eyebrow">{project.category}</span>
-        <strong>{project.title}</strong>
       </span>
-      <span className="project-list-summary">{project.summary}</span>
-      <span className="project-list-action">{project.published ? "View project" : project.status}</span>
+      <strong className="project-card-title">{project.title}</strong>
+      <span className="project-card-summary">{project.summary}</span>
+      <span className="project-card-stack">{project.stack.join(" · ")}</span>
+      <span className="project-card-action">{project.published ? "View project →" : project.status}</span>
     </>
   );
 }
@@ -28,11 +29,11 @@ export default function ProjectsPage() {
       <PageIntro eyebrow="02 · Passion work" title="Projects" description="Software built around problems I wanted to understand deeply enough to solve." />
       <section className="content-shell project-directory" aria-label="Project directory">
         {projects.map((project, index) => project.published ? (
-          <Link className="project-list-row" href={sitePath(`/projects/${project.slug}/`)} key={project.slug}>
+          <Link className="project-card" href={sitePath(`/projects/${project.slug}/`)} key={project.slug}>
             <ProjectContent project={project} index={index} />
           </Link>
         ) : (
-          <div className="project-list-row project-list-row-disabled" key={project.slug}>
+          <div className="project-card project-card-disabled" key={project.slug}>
             <ProjectContent project={project} index={index} />
           </div>
         ))}

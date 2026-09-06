@@ -55,11 +55,22 @@ export default async function ProjectPage({ params }: { params: Promise<{ slug: 
         ) : null}
 
         <div className="project-narrative">
-          <section><p className="eyebrow">What it does</p><h2>The project</h2><p>{project.description}</p></section>
-          <section><p className="eyebrow">Why I built it</p><h2>The personal connection</h2><p>{project.why}</p></section>
-          <section><p className="eyebrow">What broke</p><h2>The hardest problem</h2><p>{project.challenge}</p></section>
-          <section><p className="eyebrow">What changed</p><h2>The solution</h2><p>{project.solution}</p></section>
-          <section><p className="eyebrow">Evidence</p><h2>How I verified it</h2><p>{project.verification}</p></section>
+          <section>
+            <h2>Product overview</h2>
+            <p>{project.description}</p>
+          </section>
+          <section>
+            <h2>Problem addressed</h2>
+            <p>{project.why}</p>
+          </section>
+          <section>
+            <h2>Technical approach</h2>
+            <p>{project.challenge} {project.solution}</p>
+          </section>
+          <section>
+            <h2>Measured results</h2>
+            <p>{project.verification}</p>
+          </section>
         </div>
 
         <section className="project-proof" aria-label="Project evidence">

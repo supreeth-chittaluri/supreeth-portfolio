@@ -63,7 +63,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "pulse-durable-but-stale",
     title: "The queue worked, but the product stayed stale",
-    date: "September 5, 2026",
+    date: "August 16, 2026",
     category: "Pulse",
     readTime: "8 minute read",
     summary: "Durability prevented data loss, but it also hid the fact that useful work still depended on a visitor pressing a button",
@@ -110,7 +110,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "a2transit-route-two-miles-away",
     title: "The route arrived on time and two miles away",
-    date: "September 3, 2026",
+    date: "May 18, 2026",
     category: "a2transit",
     readTime: "9 minute read",
     summary: "A routing result looked correct until I reconstructed the journey and discovered that two pieces of state meant completely different things",
@@ -157,7 +157,7 @@ export const blogPosts: BlogPost[] = [
   {
     slug: "undrift-freshness-was-not-enough",
     title: "A recent commit does not make a skill strong",
-    date: "September 2, 2026",
+    date: "July 7, 2026",
     category: "Undrift",
     readTime: "8 minute read",
     summary: "My first score confused recent activity with real experience, so I replaced one confident number with three narrower answers",

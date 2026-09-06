@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { ContactActions, PageShell, SectionHeading } from "./components";
-import { education, sitePath, snapshots } from "./site-data";
+import { education, snapshots } from "./site-data";
 import TypedIntro from "./typewriter";
 
 export default function Home() {
@@ -13,12 +12,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section-shell home-snapshot" aria-labelledby="current-heading">
-        <SectionHeading number="01" eyebrow="Right now" title="A quick introduction" id="current-heading" />
+      <section className="profile-strip" aria-label="Current profile">
         <div className="snapshot-grid">
           {snapshots.map((snapshot) => (
             <article className="snapshot-card" key={snapshot.label}>
-              <p className="eyebrow">{snapshot.label}</p>
+              <p className="snapshot-label">{snapshot.label}</p>
               <p className="snapshot-value">{snapshot.value}</p>
             </article>
           ))}
@@ -26,7 +24,7 @@ export default function Home() {
       </section>
 
       <section className="section-shell" aria-labelledby="education-heading">
-        <SectionHeading number="02" eyebrow="Education" title="University of Michigan" id="education-heading" />
+        <SectionHeading number="01" eyebrow="Education" title="University of Michigan" id="education-heading" />
         <article className="education-card">
           <div className="education-main">
             <div>
@@ -52,17 +50,6 @@ export default function Home() {
         </article>
       </section>
 
-      <section className="section-shell closing-callout" aria-label="Portfolio invitation">
-        <p className="eyebrow">Explore further</p>
-        <h2>The work has its own room now</h2>
-        <p>
-          Visit the project pages for the systems I have built, or read the blog for the decisions, failures, and fixes behind them.
-        </p>
-        <div className="button-row">
-          <Link className="button button-primary" href={sitePath("/projects/")}>View projects</Link>
-          <Link className="button" href={sitePath("/blog/")}>Read the blog</Link>
-        </div>
-      </section>
     </PageShell>
   );
 }

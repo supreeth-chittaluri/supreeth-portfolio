@@ -10,11 +10,13 @@ export const metadata: Metadata = {
 };
 
 export default function BlogPage() {
+  const posts = [...blogPosts].sort((left, right) => Date.parse(right.date) - Date.parse(left.date));
+
   return (
     <PageShell>
-      <PageIntro eyebrow="03 · Blog" title="What broke and what I learned" description="Notes from building systems, questioning the first answer, and tracing a bug far enough to understand it." />
+      <PageIntro eyebrow="04 · Blog" title="Engineering notes" description="Design decisions, debugging stories, and lessons from each project." />
       <section className="content-shell blog-directory" aria-label="Blog posts">
-        {blogPosts.map((post, index) => (
+        {posts.map((post, index) => (
           <Link className="blog-row" href={sitePath(`/blog/${post.slug}/`)} key={post.slug}>
             <span className="row-number">{String(index + 1).padStart(2, "0")}</span>
             <span className="blog-row-copy">

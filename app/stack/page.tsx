@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function StackPage() {
   return (
     <PageShell>
-      <PageIntro eyebrow="04 · Stack" title="Skills" description="Organized by the work each tool helps me do, with the technologies I have used across projects, coursework, and experience." />
+      <PageIntro eyebrow="03 · Stack" title="Skills" description="Technologies used across projects, coursework, and experience." />
       <section className="content-shell stack-directory" aria-label="Technology groups">
         {stackGroups.map((group) => (
           <article className="stack-group" key={group.name}>
