@@ -1030,6 +1030,13 @@ a {
   padding-bottom: 8rem;
 }
 
+.about-page-intro {
+  width: min(100% - 2rem, 900px);
+  margin: 0 auto;
+  padding: 11rem 0 4rem;
+  text-align: center;
+}
+
 .about-profile {
   display: grid;
   grid-template-columns: minmax(16rem, 0.72fr) minmax(0, 1.28fr);
@@ -1053,30 +1060,20 @@ a {
 }
 
 .about-introduction {
-  max-width: 680px;
+  max-width: 620px;
   margin: 1rem 0 0;
-  font-family: "Libre Baskerville", Georgia, serif;
-  font-size: clamp(1.25rem, 2.6vw, 2rem);
-  line-height: 1.65;
-}
-
-.about-focus {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.65rem;
-  margin-top: 1.8rem;
-}
-
-.about-focus span {
-  padding: 0.48rem 0.75rem;
-  border: 1px solid var(--rule);
-  border-radius: 999px;
   color: var(--muted);
-  font-size: 0.78rem;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  line-height: 1.85;
 }
 
 .about-education {
   padding-bottom: 7rem;
+}
+
+.education-section-label {
+  margin-bottom: 1.25rem;
+  text-align: center;
 }
 
 .off-clock-heading {
@@ -1085,10 +1082,8 @@ a {
 }
 
 .off-clock-heading h2 {
-  margin: 0.7rem 0 0;
-  font-family: "Libre Baskerville", Georgia, serif;
-  font-size: clamp(2.2rem, 5vw, 3.6rem);
-  line-height: 1.2;
+  margin: 0;
+  font-weight: 400;
 }
 
 .about-story {
@@ -1201,6 +1196,10 @@ a {
   }
 
   .page-intro {
+    padding-top: 9rem;
+  }
+
+  .about-page-intro {
     padding-top: 9rem;
   }
 

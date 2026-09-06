@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PageIntro, PageShell } from "../components";
+import { PageShell } from "../components";
 import { aboutStories, education, sitePath } from "../site-data";
 
 export const metadata: Metadata = {
@@ -10,7 +10,9 @@ export const metadata: Metadata = {
 export default function AboutPage() {
   return (
     <PageShell>
-      <PageIntro eyebrow="05 · About Me" title="Education" />
+      <section className="about-page-intro">
+        <p className="eyebrow">05 · About Me</p>
+      </section>
       <section className="content-shell about-profile" aria-label="Introduction">
         <div className="about-headshot-frame">
           {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -19,21 +21,17 @@ export default function AboutPage() {
         <div className="about-profile-copy">
           <p className="eyebrow">Supreeth Chittaluri</p>
           <p className="about-introduction">
-            I am a junior studying Computer Science at the University of Michigan, interested in software engineering, applied AI, and dependable systems. I enjoy turning complicated problems into products people can understand and use, especially when algorithms, data, and thoughtful product decisions all matter.
+            I am a junior at the University of Michigan studying Computer Science. I enjoy building useful software, from routing systems to tools that make complex data easier to act on. I am especially interested in software engineering and applied AI.
           </p>
-          <div className="about-focus" aria-label="Areas of interest">
-            <span>Software engineering</span>
-            <span>Applied AI</span>
-            <span>Systems</span>
-          </div>
         </div>
       </section>
       <section className="content-shell about-education" aria-labelledby="education-heading">
+        <p className="eyebrow education-section-label" id="education-heading">Education</p>
         <article className="education-card">
           <div className="education-main">
             <div>
               <p className="eyebrow">Ann Arbor, Michigan</p>
-              <h2 id="education-heading">University of Michigan</h2>
+              <h2>University of Michigan</h2>
               <div className="education-degree-row">
                 <p className="education-degree">Bachelor of Science in Engineering in Computer Science (B.S.E. C.S.)</p>
                 <p className="education-standing">Junior</p>
@@ -54,7 +52,7 @@ export default function AboutPage() {
         </article>
       </section>
       <section className="content-shell off-clock-heading" aria-labelledby="off-clock-heading">
-        <h2 id="off-clock-heading">Life outside software</h2>
+        <h2 className="eyebrow" id="off-clock-heading">Life outside software</h2>
       </section>
       <section className="about-collage" aria-label="Personal photo collage">
         {aboutStories.map((story) => (
