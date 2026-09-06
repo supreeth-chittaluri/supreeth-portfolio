@@ -3,9 +3,12 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://supreethchittaluri.vercel.app"),
-  title: "Supreeth Chittaluri",
+  title: {
+    default: "Supreeth Chittaluri",
+    template: "%s | Supreeth Chittaluri"
+  },
   description:
-    "The portfolio of Supreeth Chittaluri, a University of Michigan computer science student building backend systems, full-stack products, and applied tools.",
+    "The portfolio of Supreeth Chittaluri, a University of Michigan computer science student building backend systems, full stack products, and applied tools.",
   keywords: [
     "Supreeth Chittaluri",
     "software engineer",
@@ -14,10 +17,7 @@ export const metadata: Metadata = {
     "systems programming"
   ],
   authors: [{ name: "Supreeth Chittaluri" }],
-  creator: "Supreeth Chittaluri",
-  alternates: {
-    canonical: "/"
-  }
+  creator: "Supreeth Chittaluri"
 };
 
 export default function RootLayout({

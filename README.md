@@ -1,3 +1,3 @@
-# Supreeth Chittaluri — Portfolio
+# Supreeth Chittaluri Portfolio
 
 https://supreethchittaluri.vercel.app

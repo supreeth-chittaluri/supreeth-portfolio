@@ -24,17 +24,17 @@ export default function TypedIntro() {
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     const updatePreference = () => setReduceMotion(mediaQuery.matches);
 
-    updatePreference();
+    const initialPreference = window.setTimeout(updatePreference, 0);
     mediaQuery.addEventListener("change", updatePreference);
 
-    return () => mediaQuery.removeEventListener("change", updatePreference);
+    return () => {
+      window.clearTimeout(initialPreference);
+      mediaQuery.removeEventListener("change", updatePreference);
+    };
   }, []);
 
   useEffect(() => {
-    if (reduceMotion) {
-      setVisibleCharacters(totalCharacters);
-      return;
-    }
+    if (reduceMotion) return;
 
     if (visibleCharacters >= totalCharacters) return;
 
@@ -50,10 +50,11 @@ export default function TypedIntro() {
     return () => window.clearTimeout(nextCharacter);
   }, [reduceMotion, visibleCharacters]);
 
+  const displayedCharacters = reduceMotion ? totalCharacters : visibleCharacters;
   const activeLine =
-    visibleCharacters <= firstLineEnd
+    displayedCharacters <= firstLineEnd
       ? 0
-      : visibleCharacters <= secondLineEnd
+      : displayedCharacters <= secondLineEnd
         ? 1
         : 2;
   const cursor = !reduceMotion ? <span className="typewriter-cursor" /> : null;
@@ -62,15 +63,15 @@ export default function TypedIntro() {
     <div className="flex min-h-[10rem] flex-col gap-4">
       <span className="sr-only">{lines.join(". ")}</span>
       <p className="min-h-4 font-mono text-xs uppercase tracking-[0.2em] text-accent" aria-hidden="true">
-        {typedLine(lines[0], 0, visibleCharacters)}
+        {typedLine(lines[0], 0, displayedCharacters)}
         {activeLine === 0 ? cursor : null}
       </p>
       <h1 className="min-h-12 font-serif text-4xl font-bold sm:text-5xl" aria-hidden="true">
-        {typedLine(lines[1], firstLineEnd, visibleCharacters)}
+        {typedLine(lines[1], firstLineEnd, displayedCharacters)}
         {activeLine === 1 ? cursor : null}
       </h1>
       <p className="min-h-[3.5rem] max-w-xl text-base leading-relaxed opacity-70" aria-hidden="true">
-        {typedLine(lines[2], secondLineEnd, visibleCharacters)}
+        {typedLine(lines[2], secondLineEnd, displayedCharacters)}
         {activeLine === 2 ? cursor : null}
       </p>
     </div>
